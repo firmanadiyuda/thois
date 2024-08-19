@@ -10,7 +10,7 @@
       <div class="text-4xl"><b>Events</b></div>
     </div>
     <div class="text-right">
-      <%= link_to "New event", new_event_path, class:'bg-neutral-900 p-3 rounded-xl text-white' %>
+      <%= render(LinktoComponent.new(path: new_event_path)) do %> New event <% end %>
     </div>
   </div>
 
@@ -28,7 +28,6 @@
 
         <div class="text-right">
           <p>
-            <%# test %>
           </p>
         </div>
 

@@ -12,7 +12,7 @@
     <%= link_to "Events", events_path %> / <%= link_to @event.name, @event %> / Edit event
   </div>
 
-<%= render "form", event: @event %>
+<%= render "form", event: @event, submit_text: "Update" %>
 
 <div class="mt-2">
   <%= button_to "Delete", @event, method: :delete, class:'bg-red-800 p-3 rounded-xl text-white' %>

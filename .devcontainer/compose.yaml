@@ -1,4 +1,4 @@
-name: "thois"
+name: "thois-dev"
 
 services:
   rails-app:

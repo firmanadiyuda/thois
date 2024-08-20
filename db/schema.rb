@@ -17,17 +17,17 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_19_162857) do
   create_table "events", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.integer "booth_type"
+    t.integer "booth_type", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "photobooth_configurations", force: :cascade do |t|
-    t.integer "qr_counter"
-    t.integer "camera_counter"
-    t.integer "camera_captured"
-    t.string "camera_ip"
-    t.integer "mode"
+    t.integer "qr_counter", default: 1
+    t.integer "camera_counter", default: 1
+    t.integer "camera_captured", default: 0
+    t.string "camera_ip", default: "http://192.168.8.122:5513/"
+    t.integer "mode", default: 0
     t.bigint "event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

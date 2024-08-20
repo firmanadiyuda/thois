@@ -7,7 +7,7 @@ class EventsTest < ApplicationSystemTestCase
 
   test "visiting the index" do
     visit events_url
-    assert_selector "h1", text: "Events"
+    assert_text "Events"
   end
 
   test "should create event" do
@@ -16,27 +16,26 @@ class EventsTest < ApplicationSystemTestCase
 
     fill_in "Description", with: @event.description
     fill_in "Name", with: @event.name
-    click_on "Create Event"
+    click_on "Create"
 
     assert_text "Event was successfully created"
-    click_on "Back"
   end
 
   test "should update Event" do
     visit event_url(@event)
-    click_on "Edit this event", match: :first
+    click_on "Edit", match: :first
 
     fill_in "Description", with: @event.description
     fill_in "Name", with: @event.name
-    click_on "Update Event"
+    click_on "Update"
 
     assert_text "Event was successfully updated"
-    click_on "Back"
   end
 
   test "should destroy Event" do
     visit event_url(@event)
-    click_on "Destroy this event", match: :first
+    click_on "Edit", match: :first
+    click_on "Delete", match: :first
 
     assert_text "Event was successfully destroyed"
   end

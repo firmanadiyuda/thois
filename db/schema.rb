@@ -10,14 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_08_19_080727) do
+ActiveRecord::Schema[7.2].define(version: 2024_08_19_162857) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "events", force: :cascade do |t|
     t.string "name"
     t.text "description"
+    t.integer "booth_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "photobooth_configurations", force: :cascade do |t|
+    t.integer "qr_counter"
+    t.integer "camera_counter"
+    t.integer "camera_captured"
+    t.string "camera_ip"
+    t.integer "mode"
+    t.bigint "event_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_photobooth_configurations_on_event_id"
   end
 end

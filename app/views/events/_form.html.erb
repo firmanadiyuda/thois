@@ -1,4 +1,4 @@
-<div class="mt-5">
+<div class="mt-5" data-controller="booth-type" data-action="change->booth-type#toggleVisibility">
 <%= form_with(model: event) do |form| %>
   <% if event.errors.any? %>
     <div style="color: red">
@@ -13,8 +13,22 @@
   <% end %>
 
   <div class="grid gap-5">
-    <%= render(InputComponent.new(form: form, label: "Name", data: "name"))%>
-    <%= render(TextAreaComponent.new(form: form, label: "Description", data: "description"))%>
+    <div class="grid gap-5">
+      <%= render(InputComponent.new(form: form, type: 'text_field', label: "Name", data: "name")) %>
+      <%= render(TextAreaComponent.new(form: form, label: "Description", data: "description")) %>
+      <%= render(RadioButtonComponent.new(
+        form: form,
+        name: "booth_type",
+        options: [[0, "Photobooth"], [1, "360 Videobooth"]],
+        data: { action: "change->booth-type#toggleVisibility" } # memicu controller pada perubahan
+      )) %>
+    </div>
+
+    <div class="grid gap-5">
+      <div data-booth-type-target="photoboothForm">
+        <%= render "/events/photobooth_configurations/form", form: form %>
+      </div>
+    </div>
   </div>
 
   <div class="mt-5">

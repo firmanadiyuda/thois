@@ -1,0 +1,12 @@
+<div class="grid gap-5">
+  <%= form.fields_for :photobooth_configuration do |config_form| %>
+    <%= render(InputComponent.new(form: config_form, type: "number_field", label: "QR Counter", data: "qr_counter")) %>
+    <%= render(InputComponent.new(form: config_form, type: "number_field", label: "Camera Counter", data: "camera_counter")) %>
+    <%= render(InputComponent.new(form: config_form, type: "text_field", label: "Camera IP Address", data: "camera_ip")) %>
+    <%= render(RadioButtonComponent.new(
+      form: config_form,
+      name: "mode",
+      options: [[0, "Download"], [1, "Cetak"]],
+    )) %>
+  <% end %>
+</div>

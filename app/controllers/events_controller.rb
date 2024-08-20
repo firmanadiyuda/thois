@@ -13,10 +13,13 @@ class EventsController < ApplicationController
   # GET /events/new
   def new
     @event = Event.new
+    @event.build_photobooth_configuration
   end
 
   # GET /events/1/edit
   def edit
+    @event = Event.find(params[:id])
+    @event.build_photobooth_configuration unless @event.photobooth_configuration
   end
 
   # POST /events or /events.json
@@ -65,6 +68,8 @@ class EventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:name, :description)
+      params.require(:event).permit(
+        :name, :description, :booth_type,
+        photobooth_configuration_attributes: [ :qr_counter, :camera_counter, :camera_captured, :camera_ip, :mode ])
     end
 end

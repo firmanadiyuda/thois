@@ -1,0 +1,9 @@
+<div class="flex-col">
+  <% @options.each do |value, text| %>
+    <div>
+      <% id = "#{@name}_#{value}" %>
+      <%= @form.radio_button @name, value %>
+      <%= @form.label id, text %>
+    </div>
+  <% end %>
+</div>  

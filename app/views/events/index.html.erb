@@ -14,28 +14,12 @@
     </div>
   </div>
 
-  <% @events.each do |event| %>
+  <%= turbo_stream_from :events_list %>
+  <div id='all_events'>
+    <% @events.each do |event| %>
+      <%= render partial:"events/event", locals: { event: event } %>
+    <% end %>
+  </div>
 
-  <%= link_to event do %>
-    <div class="border-2 p-5 rounded-xl my-5">
-      <div class="grid grid-cols-2">
-        
-        <div>
-          <b><%= event.name %></b>
-          <br>
-          <%= event.description %>
-        </div>
-
-        <div class="text-right">
-          <p>
-          </p>
-        </div>
-
-      </div>
-    </div>
-  <% end %>
-
-    
-  <% end %>
 </div>
 

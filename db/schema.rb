@@ -10,27 +10,62 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_08_19_162857) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_01_153641) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "events", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "name"
     t.text "description"
     t.integer "booth_type", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
-  create_table "photobooth_configurations", force: :cascade do |t|
-    t.integer "qr_counter", default: 1
-    t.integer "camera_counter", default: 1
-    t.integer "camera_captured", default: 0
-    t.string "camera_ip", default: "http://192.168.8.122:5513/"
-    t.integer "mode", default: 0
-    t.bigint "event_id"
+  create_table "exports", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["event_id"], name: "index_photobooth_configurations_on_event_id"
+    t.string "filename"
+    t.string "compress"
+    t.string "cloud"
+    t.integer "filetype"
+    t.boolean "printable"
+    t.bigint "session_id"
+    t.index ["session_id"], name: "index_exports_on_session_id"
+  end
+
+  create_table "photobooths", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "print", default: false
+    t.integer "paper", default: 0
+    t.boolean "thermal", default: false
+    t.string "overlay"
+    t.jsonb "overlay_layout"
+    t.string "overlay_horizontal"
+    t.boolean "use_overlay_horizontal", default: false
+    t.bigint "event_id"
+    t.index ["event_id"], name: "index_photobooths_on_event_id"
+  end
+
+  create_table "raws", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "filename"
+    t.string "compress"
+    t.string "cloud"
+    t.integer "filetype"
+    t.boolean "selected"
+    t.bigint "session_id"
+    t.index ["session_id"], name: "index_raws_on_session_id"
+  end
+
+  create_table "sessions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "status"
+    t.text "error"
+    t.bigint "event_id"
+    t.index ["event_id"], name: "index_sessions_on_event_id"
   end
 end

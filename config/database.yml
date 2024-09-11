@@ -19,15 +19,17 @@ default: &default
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   <% if ENV["DB_HOST"] %>
-  host: <%= ENV["DB_HOST"] %>
-  username: postgres
-  password: postgres
+  host: <%= ENV["DB_HOST"] {localhost}%>
+  username: thois
+  password: <%= Rails.application.credentials.db.local.password %>
   <% end %>
 
 
 development:
   <<: *default
   database: thois_development
+  username: thois
+  password: <%= Rails.application.credentials.db.local.password %>
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -62,6 +64,8 @@ development:
 test:
   <<: *default
   database: thois_test
+  username: thois
+  password: <%= Rails.application.credentials.db.local.password %>
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -87,4 +91,4 @@ production:
   <<: *default
   database: thois_production
   username: thois
-  password: <%= ENV["THOIS_DATABASE_PASSWORD"] %>
+  password: <%= Rails.application.credentials.db.local.password %>

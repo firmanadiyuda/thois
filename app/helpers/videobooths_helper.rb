@@ -1,0 +1,2 @@
+module VideoboothsHelper
+end

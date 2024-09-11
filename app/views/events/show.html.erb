@@ -7,12 +7,35 @@
       <div class="text-4xl"><b><%= @event.name %></b></div>
     </div>
     <div class="text-right">
+      <%= render(LinktoComponent.new(path: event_photobooth_liveview_path(@event, @event.photobooth))) do %> Live View <% end %>
+      <%= render(LinktoComponent.new(path: event_photobooth_liveview_operator_path(@event, @event.photobooth))) do %> Operator <% end %>
       <%= render(LinktoComponent.new(path: edit_event_path(@event))) do %> Edit <% end %>
     </div>
   </div>
 
   <div class="w-full text-neutral-500 italic">
     <%= link_to "Events", events_path%> / <%= @event.name %>
+  </div>
+
+    <div class="py-5 my-5">
+      <table id="all_sessions" class="w-full">
+        <thead>
+          <tr>
+            <th class="bg-black/80 border-r border-neutral-400 text-white w-24 text-left p-2 rounded-tl-xl text-sm">ID</th>
+            <th class="bg-black/80 border-r border-neutral-400 text-white text-left p-2 text-sm">DATE</th>
+            <th class="bg-black/80 border-r  border-neutral-400 text-white text-left p-2 text-sm">STATUS</th>
+            <th class="bg-black/80 text-white py-2 px-5 rounded-tr-xl text-sm text-right">ACTION</th>
+          </tr>
+        </thead>
+        <tbody>
+        <%= turbo_stream_from :sessions_list %>
+        <% @sessions.each do |session| %>
+          <%= render partial:"sessions/session", locals: { session: session } %>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+
   </div>
 
 </div>

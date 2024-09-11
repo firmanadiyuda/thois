@@ -1,0 +1,25 @@
+<div class="w-full">
+
+  <div class="grid grid-cols-2">
+    <div class="">
+      <div class="text-4xl"><b><%= @event.name %></b></div>
+    </div>
+  </div>
+
+    <div class="w-full text-neutral-500 italic">
+    <%= link_to "Events", events_path %> / <%= link_to @event.name, @event %> / Operator
+  </div>
+
+<p id="status" class="text-red-600">Disconnected</p>
+
+<%= button_to "Capture", 'capture' %>
+<%= link_to "Select Photo", 'select_photo_operator' %>
+<%= button_to "Start Liveview", 'toggle_liveview', id: 'toggle-liveview' %>
+<%= button_to "Detect Camera", 'connect', id: 'connect' %>
+<%#= button_to "Capture", 'connect', id: 'connect' %>
+
+<%# @session.raw.each do |raw| %>
+<!--  <li><%#= raw.id %></li>-->
+<%# end %>
+
+</div>

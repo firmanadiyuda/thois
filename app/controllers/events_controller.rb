@@ -3,29 +3,30 @@ class EventsController < ApplicationController
 
   # GET /events or /events.json
   def index
-    @events = Event.all
+    @events = Event.order(created_at: :desc)
   end
 
   # GET /events/1 or /events/1.json
   def show
+    @sessions = @event.session.order(created_at: :desc)
   end
 
   # GET /events/new
   def new
     @event = Event.new
-    @event.build_photobooth_configuration
+    @event.build_photobooth
+    # @event.build_videobooth
   end
 
   # GET /events/1/edit
   def edit
-    @event = Event.find(params[:id])
-    @event.build_photobooth_configuration unless @event.photobooth_configuration
+    @event.build_photobooth unless @event.photobooth
+    # @event.build_videobooth unless @event.videobooth
   end
 
   # POST /events or /events.json
   def create
     @event = Event.new(event_params)
-
     respond_to do |format|
       if @event.save
         format.html { redirect_to event_url(@event), notice: "Event was successfully created." }
@@ -70,6 +71,6 @@ class EventsController < ApplicationController
     def event_params
       params.require(:event).permit(
         :name, :description, :booth_type,
-        photobooth_configuration_attributes: [ :qr_counter, :camera_counter, :camera_captured, :camera_ip, :mode ])
+        photobooth_attributes: [ :id, :print, :paper, :thermal, :overlay, :overlay_layout, :overlay_horizontal, :use_overlay_horizontal, :remove_overlay ])
     end
 end

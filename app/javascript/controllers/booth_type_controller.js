@@ -1,17 +1,19 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 // Connects to data-controller="booth-type"
 export default class extends Controller {
-  static targets = ["photoboothForm", "spinboothForm"]
+  static targets = ["photoboothForm", "videoboothForm"];
 
   connect() {
     this.toggleVisibility();
   }
 
   toggleVisibility() {
-    const selectedValue = this.element.querySelector('input[name="event[booth_type]"]:checked')?.value;
-    this.photoboothFormTarget.style.display = selectedValue == 0 ? "block" : "none";
-    this.spinboothFormTarget.style.display = selectedValue == 1 ? "block" : "none";
-
+    const selectedValue = this.element.querySelector(
+      'input[name="event[booth_type]"]:checked'
+    )?.value;
+    this.photoboothFormTarget.style.display =
+      selectedValue == "photobooth" ? "block" : "none";
+    // this.videoboothFormTarget.style.display = selectedValue == 'videobooth' ? "block" : "none";
   }
 }

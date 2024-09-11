@@ -1,0 +1,74 @@
+<div class="grid gap-5">
+  <%= form.fields_for :photobooth do |config_form| %>
+
+    <%= render(RadioButtonComponent.new(
+      form: config_form,
+      name: "print",
+      label: "Print?",
+      options: [[true, "Yes"], [false, "No"]],
+    )) %>
+
+    <%= render(RadioButtonComponent.new(
+      form: config_form,
+      name: "paper",
+      label: "Paper Size",
+      options: [["p6x4", "6x4"], ["p6x4_split", "6x4 Split"]],
+    )) %>
+
+    <%= render(RadioButtonComponent.new(
+      form: config_form,
+      name: "thermal",
+      label: "Print QR Thermal?",
+      options: [[true, "Yes"], [false, "No"]],
+    )) %>
+
+    <%#= config_form.object.remove_overlay %>
+<!--    <label>-->
+      <%#= config_form.check_box :remove_overlay %>
+<!--      Remove overlay
+    </label>-->
+
+
+    <div data-controller="overlay-layout">
+      <%= config_form.hidden_field :overlay_layout, data: { overlay_layout_target: 'overlayLayoutField' } %>
+
+<!--      <label for="aspect_ratio">Aspect Ratio:</label>
+      <select id="aspect_ratio" data-action="change->overlay-layout#setAspectRatio" data-overlay-layout-target="aspectRatio">
+        <option value="1.5">3:2</option>
+        <option value="1.777">16:9</option>
+        <option value="1.333">4:3</option>
+      </select>-->
+      Overlay
+      <%= config_form.file_field :overlay, data: { overlay_layout_target: 'overlayInput' } %>
+
+      <div class="controls">
+        <button data-action="click->overlay-layout#addPlaceholder">Add Placeholder</button>
+        <button data-action="click->overlay-layout#addQR">Add QR</button>
+        <button data-action="click->overlay-layout#removeSelectedObject">Remove Element</button>
+        <button data-action="click->overlay-layout#removeAllPlaceholder">Remove All</button>
+        <button data-action="click->overlay-layout#bringOverlayToFront">Bring Overlay to Front</button>
+        <button data-action="click->overlay-layout#sendOverlayToBack">Send Overlay to Back</button>
+      </div>
+
+      <%= image_tag(config_form.object.overlay_url + "?v=#{config_form.object.updated_at.to_i}", alt: "Overlay Image", data: { overlay_layout_target: 'overlayImg' }, style:"display: none" ) if config_form.object.overlay.present? %>
+      <%= image_tag("", alt: "Overlay Image", data: { overlay_layout_target: 'overlayImg' }, style:"display: none" ) if !config_form.object.overlay.present? %>
+
+      <div class="relative overflow-hidden">
+        <canvas id="overlayCanvas" data-overlay-layout-target="overlayCanvas" class="absolute top-0 left-0 border border-black"></canvas>
+      </div>
+
+      Overlay Horizontal
+      <%= render(RadioButtonComponent.new(
+        form: config_form,
+        name: "use_overlay_horizontal",
+        label: "Use Overlay Horizontal?",
+        options: [[true, "Yes"], [false, "No"]],
+      )) %>
+      <%= config_form.file_field :overlay_horizontal, data: { overlay_layout_target: 'overlayHorizontalInput' } %>
+      <%= image_tag(config_form.object.overlay_horizontal_url + "?v=#{config_form.object.updated_at.to_i}", class: "max-w-sm", data: { overlay_layout_target: 'overlayHorizontalImg' } ) if config_form.object.overlay_horizontal.present? %>
+      <%= image_tag("", class: "max-w-sm", data: { overlay_layout_target: 'overlayHorizontalImg' }) if !config_form.object.overlay_horizontal.present? %>
+
+    </div>
+    
+  <% end %>
+</div>

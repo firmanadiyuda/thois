@@ -1,0 +1,35 @@
+<div class="w-full">
+
+  <div class="grid grid-cols-2">
+    <div class="">
+      <!--<div class="text-4xl"><b><%#= @event.name %></b></div>-->
+    </div>
+  </div>
+
+    <div class="w-full text-neutral-500 italic">
+  </div>
+
+<!--<p id="status" class="text-red-600">Disconnected</p>-->
+<%= link_to "Liveview", 'liveview_operator' %>
+<%= link_to "Finish", 'finish_operator' %>
+
+          <% @session.raw.order(:created_at).each_with_index do |raw, index| %>
+            <div class="px-5 py-6">
+            <%= button_to "select_photo_operator/#{raw.id}" do %>
+
+              <!--<button data-action="click->select-photo#selectPhoto">-->
+                <%= tag.img src: raw.filename, id: raw.id, alt: 'Camera Preview', class: 'w-full rounded-xl object-contain' %>
+              <!--</button>-->
+            <% end %>
+            </div>
+          <% end %>
+          
+<%#= button_to "Capture", 'capture' %>
+<%#= button_to "Start Liveview", 'toggle_liveview', id: 'toggle-liveview' %>
+<%#= button_to "Detect Camera", 'connect', id: 'connect' %>
+
+<%# @session.raw.each do |raw| %>
+<!--  <li><%#= raw.id %></li>-->
+<%# end %>
+
+</div>

@@ -1,0 +1,47 @@
+<div class="bg-black text-white h-screen w-full relative">
+  <div class="h-full w-full relative flex items-center justify-center">
+    <div id="countdown" class="absolute bg-black/30 p-5 w-full text-center rounded-3xl text-white bold text-[125pt] hidden"></div>
+    <%= tag.img id: 'preview-captured', alt: 'Camera Preview', class: 'h-full w-full object-contain hidden' %>
+    <%= tag.img id: 'liveview', alt: 'Camera Preview', class: 'h-full w-full object-contain hidden' %>
+
+    <!--Show the horizontal overlay-->
+    <div class="absolute top-0 bottom-0">
+      <%= image_tag(@event.photobooth.overlay_horizontal.url + "?v=#{@event.photobooth.updated_at.to_i}", class: "max-h-full" ) if @event.photobooth.use_overlay_horizontal? %>
+    </div>
+
+    <!--Show current session photo count-->
+    <div id="total-captured" class="absolute bg-black border-b border-x border-white/50 text-white/50 px-5 py-2 text-md font-bold rounded-b-xl top-0">
+      <%= "Current session photo: #{@session.raw.count}" %>
+    </div>
+
+    <!--Start button-->
+    <div id="start-button" class="absolute">
+      <%= button_to 'capture' do %>
+        <div class="bg-white/30 text-black px-20 py-10 text-6xl rounded-3xl font-bold">
+          PRESS TO START
+
+          <%# @session.raw.each_with_index do |raw, index| %>
+<!--            <div class="px-10 py-6">
+              <button data-action="click->select-photo#selectPhoto">
+                <%#= tag.img src: raw.filename, id: raw.id, alt: 'Camera Preview', class: 'w-full rounded-xl object-contain', data: { select_photo_target: 'photo', index: index } %>-->
+<!--              </button>
+            </div>
+          <%# end %>-->
+
+
+        </div>
+      <% end %>
+    </div>
+
+  <!--Next button to select photo-->
+  <div class="absolute bottom-0">
+    <%= link_to event_photobooth_select_photo_path, id: "next-button" do %>
+      <div class="bg-white border-t-2 border-x-2 border-black/50 text-black px-10 py-3 text-2xl font-bold rounded-t-xl">
+        Next ->
+      </div>
+    <% end %>
+  </div>
+
+  </div>
+
+</div>

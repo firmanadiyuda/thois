@@ -30,9 +30,14 @@
 !/tmp/storage/.keep
 
 /public/assets
+/public/uploads
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+/vendor/*
+
+dump.rdb

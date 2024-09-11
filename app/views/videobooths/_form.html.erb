@@ -1,0 +1,21 @@
+<div class="grid gap-5">
+  <%= form.fields_for :videobooth do |config_form| %>
+    <%= render(InputComponent.new(form: config_form, type: "number_field", label: "QR Counter", data: "qr_counter")) %>
+    <%= render(InputComponent.new(form: config_form, type: "number_field", label: "Camera Counter", data: "camera_counter")) %>
+    <%= render(InputComponent.new(form: config_form, type: "text_field", label: "GoPro IP Address", data: "gopro_ip")) %>
+    <%= render(RadioButtonComponent.new(
+      form: config_form,
+      name: "quality",
+      options: [["fhd", "Full HD"], ["hd", "HD"]],
+    )) %>
+    <%= image_tag(config_form.object.overlay_url + "?#{SecureRandom.uuid}", alt: "Overlay Image") if config_form.object.overlay.present? %>
+
+    <%= config_form.file_field :overlay %>
+    <%= config_form.object.remove_overlay %>
+    <label>
+      <%= config_form.check_box :remove_overlay %>
+      Remove overlay
+    </label>
+    <%= config_form.file_field :music %>
+  <% end %>
+</div>

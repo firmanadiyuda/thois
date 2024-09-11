@@ -17,7 +17,7 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 # Use Redis adapter to run Action Cable in production
-# gem "redis", ">= 4.0.1"
+gem "redis", ">= 4.0.1"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -58,3 +58,16 @@ end
 
 gem "tailwindcss-rails", "~> 2.7"
 gem "view_component", "~> 3.13"
+gem "carrierwave", "~> 3.0.7"
+gem "ffi-gphoto2", "~> 0.10.0"
+gem "sqids"
+gem "ffmpeg", git: "https://github.com/instructure/ruby-ffmpeg"
+gem "daemons"
+gem "fog-aws"
+gem "sidekiq", "~> 7.3"
+gem "ffi-cups"
+gem "faraday"
+gem "mini_magick"
+gem "concurrent-ruby"
+gem "local_time"
+gem "prawn"

@@ -8,6 +8,10 @@ Things you may want to cover:
 * Ruby version
 
 * System dependencies
+PostgreSQL
+ImageMagick
+Redis
+libgphoto2
 
 * Configuration
 

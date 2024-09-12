@@ -9,7 +9,13 @@ class CloudUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "events/#{model.session.event.id}/#{model.filetype}"
+    if Rails.env.production?
+      "events/#{model.session.event.id}/#{model.filetype}"
+    elsif Rails.env.development?
+      "events/development/#{model.session.event.id}/#{model.filetype}"
+    else
+      "events/test/#{model.session.event.id}/#{model.filetype}"
+    end
   end
 
   CarrierWave.configure do |config|

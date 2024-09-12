@@ -10,7 +10,13 @@ class RawUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "uploads/#{model.session.event.booth_type.to_s.underscore}/#{model.session.event.id}/raw/#{model.filetype}"
+    if Rails.env.production?
+      "uploads/#{model.session.event.booth_type.to_s.underscore}/#{model.session.event.id}/raw/#{model.filetype}"
+    elsif Rails.env.development?
+      "uploads/development/#{model.session.event.booth_type.to_s.underscore}/#{model.session.event.id}/raw/#{model.filetype}"
+    else
+      "uploads/test/#{model.session.event.booth_type.to_s.underscore}/#{model.session.event.id}/raw/#{model.filetype}"
+    end
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:

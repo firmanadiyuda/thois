@@ -10,7 +10,13 @@ class CompressUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "uploads/#{model.session.event.booth_type.to_s.underscore}/#{model.session.event.id}/#{model.class.to_s.underscore}/#{model.filetype}/compress"
+    if Rails.env.production?
+      "uploads/#{model.session.event.booth_type.to_s.underscore}/#{model.session.event.id}/#{model.class.to_s.underscore}/#{model.filetype}/compress"
+    elsif Rails.env.development?
+      "uploads/development/#{model.session.event.booth_type.to_s.underscore}/#{model.session.event.id}/#{model.class.to_s.underscore}/#{model.filetype}/compress"
+    else
+      "uploads/test/#{model.session.event.booth_type.to_s.underscore}/#{model.session.event.id}/#{model.class.to_s.underscore}/#{model.filetype}/compress"
+    end
   end
 
   process resize_to_fit: [ 1800, 1200 ]

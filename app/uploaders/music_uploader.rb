@@ -11,11 +11,11 @@ class MusicUploader < CarrierWave::Uploader::Base
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
     if Rails.env.production?
-      "uploads/#{model.class.to_s.underscore}/#{model.id}"
+      "uploads/#{model.class.to_s.underscore}/#{model.event.id}"
     elsif Rails.env.development?
-      "uploads/development/#{model.class.to_s.underscore}/#{model.id}"
+      "uploads/development/#{model.class.to_s.underscore}/#{model.event.id}"
     else
-      "uploads/test/#{model.class.to_s.underscore}/#{model.id}"
+      "uploads/test/#{model.class.to_s.underscore}/#{model.event.id}"
     end
   end
 

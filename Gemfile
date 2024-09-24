@@ -57,7 +57,7 @@ group :test do
 end
 
 gem "tailwindcss-rails", "~> 2.7"
-gem "view_component", "~> 3.13"
+gem "view_component", "~> 3.14"
 gem "carrierwave", "~> 3.0.7"
 gem "ffi-gphoto2", "~> 0.10.0"
 gem "sqids"

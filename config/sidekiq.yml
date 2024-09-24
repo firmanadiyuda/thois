@@ -2,3 +2,4 @@
 :queues:
   - default
   - photobooth_queue
+  - ai_photobooth_queue

@@ -1,0 +1,42 @@
+<div class="bg-black text-white h-screen w-full relative">
+  <div class="h-full w-full relative flex items-center justify-center">
+    <%= tag.img id: 'preview-captured', class: 'h-full w-full object-contain hidden' %>
+    <%= tag.img id: 'liveview', class: 'object-contain rotate-90 hidden' %>
+    <div id="countdown" class="absolute bg-black/30 p-5 w-full text-center rounded-3xl text-white bold text-[125pt] hidden"></div>
+
+    <!--Show current session photo count-->
+    <div id="total-captured" class="absolute bg-black border-b border-x border-white/50 text-white/50 px-5 py-2 text-md font-bold rounded-b-xl top-0">
+      <%= "Current session photo: #{@session.raw.count}" %>
+    </div>
+
+    <!--Start button-->
+    <div id="start-button" class="absolute">
+      <%= button_to 'capture' do %>
+        <div class="bg-white/30 text-black px-20 py-10 text-6xl rounded-3xl font-bold">
+          PRESS TO START
+        </div>
+      <% end %>
+    </div>
+
+  <!--Next button to select photo-->
+  <div class="absolute bottom-0">
+    <%= link_to event_ai_photobooth_select_theme_path, id: "next-button" do %>
+      <div class="bg-white border-t-2 border-x-2 border-black/50 text-black px-10 py-3 text-2xl font-bold rounded-t-xl">
+        Next ->
+      </div>
+    <% end %>
+  </div>
+
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const liveview = document.getElementById('liveview');
+    const screenHeight = window.innerHeight; // Mendapatkan tinggi layar
+    const screenWidth = window.innerWidth; // Mendapatkan tinggi layar
+    liveview.style.maxWidth = screenHeight + 'px'; // Mengatur max-width berdasarkan tinggi layar
+    liveview.style.maxHeight = screenWidth + 'px'; // Mengatur max-width berdasarkan tinggi layar
+  });
+</script>

@@ -1,0 +1,6 @@
+<div class="relative" id=<%= dom_id(export) %>>
+  <%= image_tag(export.filename.url + "?v=#{export.updated_at.to_i}", class: "w-full", ) %>
+  <div class="absolute top-0 left-0 font-bold text-black bg-white p-2 rounded-br-lg">
+    <%= SqidsService.new([ export.session.id ]).call %>
+  </div>
+</div>

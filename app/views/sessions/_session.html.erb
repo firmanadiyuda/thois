@@ -1,3 +1,17 @@
+<% if session.event.booth_type == "ai_photobooth" %>
+<tr id=<%= dom_id(session) %> class="bg-neutral-100 border-b border-neutral-300">
+  <td class="p-2"><%= SqidsService.new([ session.id ]).call %></td>
+  <td class="p-2"><%= local_time(session.created_at, "%H:%M | %-d %B %Y") %></td>
+  <td class="p-2"><%= session.status %></td>
+  <td class="flex gap-2 p-2 bg-neutral-100 justify-end ml-auto">
+    <%= button_to "PRINT PHOTO", event_ai_photobooth_session_print_photo_path(session.event, session.event.photobooth, session), class: "bg-neutral-800 rounded-lg py-2 px-2 font-bold text-white text-xs" if session.status == "completed" %>
+    <%= button_to "PRINT QR", event_ai_photobooth_session_print_qr_path(session.event, session.event.photobooth, session), class: "bg-neutral-100 border border-black rounded-lg py-2 px-2 font-bold text-black text-xs"%>
+    <%= button_to "RETRY", event_ai_photobooth_session_retry_path(session.event, session.event.photobooth, session), class: "bg-red-600 rounded-lg py-2 px-3 font-bold text-white text-xs" if session.status != "capturing" %>
+  </td>
+</tr>
+<% end %>
+
+<% if session.event.booth_type == "photobooth" %>
 <tr id=<%= dom_id(session) %> class="bg-neutral-100 border-b border-neutral-300">
   <td class="p-2"><%= SqidsService.new([ session.id ]).call %></td>
   <td class="p-2"><%= local_time(session.created_at, "%H:%M | %-d %B %Y") %></td>
@@ -5,6 +19,7 @@
   <td class="flex gap-2 p-2 bg-neutral-100 justify-end ml-auto">
     <%= button_to "PRINT PHOTO", event_photobooth_session_print_photo_path(session.event, session.event.photobooth, session), class: "bg-neutral-800 rounded-lg py-2 px-2 font-bold text-white text-xs" if session.status == "completed" %>
     <%= button_to "PRINT QR", 'connect', id: 'connect', class: "bg-neutral-100 border border-black rounded-lg py-2 px-2 font-bold text-black text-xs"%>
-    <%#= button_to "RETRY", 'connect', id: 'connect', class: "bg-red-600 rounded-lg py-2 px-3 font-bold text-white text-xs" if session.status != "capturing" %>
+    <%#= button_to "RETRY", event_photobooth_session_retry_path(session.event, session.event.photobooth, session), class: "bg-red-600 rounded-lg py-2 px-3 font-bold text-white text-xs" if session.status != "capturing" %>
   </td>
 </tr>
+<% end %>

@@ -15,8 +15,7 @@ class MongodbService
       event: {
         id: @event.id,
         name: @event.name
-      },
-      type: "tes"
+      }
     }
 
     update_data[:file] = @data

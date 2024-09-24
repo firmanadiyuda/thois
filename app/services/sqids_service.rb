@@ -6,6 +6,16 @@ class SqidsService
 
   def call
     sqids = Sqids.new(alphabet: @sqids_alphabet)
-    sqids.encode(@data)
+    encoded = sqids.encode(@data)
+
+    if Rails.env.production?
+      encoded = encoded
+    elsif Rails.env.development?
+      encoded = "development-#{encoded}"
+    else
+      encoded = "test-#{encoded}"
+    end
+
+    encoded
   end
 end

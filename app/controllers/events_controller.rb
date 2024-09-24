@@ -15,12 +15,14 @@ class EventsController < ApplicationController
   def new
     @event = Event.new
     @event.build_photobooth
+    @event.build_ai_photobooth
     # @event.build_videobooth
   end
 
   # GET /events/1/edit
   def edit
     @event.build_photobooth unless @event.photobooth
+    @event.build_ai_photobooth unless @event.ai_photobooth
     # @event.build_videobooth unless @event.videobooth
   end
 
@@ -71,6 +73,7 @@ class EventsController < ApplicationController
     def event_params
       params.require(:event).permit(
         :name, :description, :booth_type,
-        photobooth_attributes: [ :id, :print, :paper, :thermal, :overlay, :overlay_layout, :overlay_horizontal, :use_overlay_horizontal, :remove_overlay ])
+        photobooth_attributes: [ :id, :print, :paper, :thermal, :overlay, :overlay_layout, :overlay_horizontal, :use_overlay_horizontal, :remove_overlay ],
+        ai_photobooth_attributes: [ :id, :ai_api, :print, :paper, :thermal, :overlay, :remove_overlay ])
     end
 end

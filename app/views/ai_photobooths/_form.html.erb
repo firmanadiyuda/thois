@@ -1,0 +1,38 @@
+<div class="grid gap-5">
+  <%= form.fields_for :ai_photobooth do |config_form| %>
+
+    <%= render(InputComponent.new(form: config_form, type: 'text_field', label: "AI API", data: "ai_api")) %>
+
+    <%= render(RadioButtonComponent.new(
+      form: config_form,
+      name: "print",
+      label: "Print?",
+      options: [[true, "Yes"], [false, "No"]],
+    )) %>
+
+    <%= render(RadioButtonComponent.new(
+      form: config_form,
+      name: "paper",
+      label: "Paper Size",
+      options: [["p6x4", "6x4"], ["p6x4_split", "6x4 Split"]],
+    )) %>
+
+    <%= render(RadioButtonComponent.new(
+      form: config_form,
+      name: "thermal",
+      label: "Print QR Thermal?",
+      options: [[true, "Yes"], [false, "No"]],
+    )) %>
+
+    <div data-controller="ai-photobooth-form">
+
+      Overlay
+      <%= config_form.file_field :overlay, data: { ai_photobooth_form_target: 'overlayInput' } %>
+      <%= image_tag(config_form.object.overlay_url + "?v=#{config_form.object.updated_at.to_i}", class: "max-w-sm", data: { ai_photobooth_form_target: 'overlayImg' } ) if config_form.object.overlay.present? %>
+      <%= image_tag("", class: "max-w-sm", data: { ai_photobooth_form_target: 'overlayImg' }) if !config_form.object.overlay.present? %>
+
+
+    </div>
+    
+  <% end %>
+</div>

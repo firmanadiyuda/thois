@@ -1,0 +1,30 @@
+<div class="mt-5">
+<%= form_with(model: [event, ai_photobooth, ai_theme]) do |form| %>
+  <% if ai_theme.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(ai_theme.errors.count, "error") %> prohibited this ai theme from being saved:</h2>
+
+      <ul>
+        <% ai_theme.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="grid gap-5">
+    <div class="grid gap-5">
+      <%= render(InputComponent.new(form: form, type: 'text_field', label: "Name", data: "name")) %>
+      <%= render(TextAreaComponent.new(form: form, label: "Styles", data: "styles")) %>
+      <%= render(TextAreaComponent.new(form: form, label: "Prompt", data: "prompt")) %>
+      <%= render(TextAreaComponent.new(form: form, label: "Negative Prompt", data: "negative_prompt")) %>
+      Preview
+      <%= form.file_field :preview, data: { ai_theme_target: "previewInput" } %>
+    </div>
+  </div>
+
+  <div class="mt-5">
+      <%= render(SubmitComponent.new(form: form)) do %> <%= submit_text %> <% end %>
+  </div>
+<% end %>
+</div>

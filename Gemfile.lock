@@ -115,6 +115,9 @@ GEM
       reline (>= 0.3.8)
     drb (2.2.1)
     erubi (1.13.0)
+    escpos (0.0.10)
+    escpos-image (0.0.12)
+      escpos (>= 0.0.10)
     excon (0.111.0)
     faraday (2.11.0)
       faraday-net_http (>= 2.0, < 3.4)
@@ -393,6 +396,8 @@ DEPENDENCIES
   concurrent-ruby
   daemons
   debug
+  escpos
+  escpos-image
   faraday
   ffi-cups
   ffi-gphoto2 (~> 0.10.0)

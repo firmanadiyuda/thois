@@ -3,7 +3,11 @@ class Session < ApplicationRecord
   after_update_commit { broadcast_replace_later_to :sessions_list, target: "session_#{self.id}", partial: "sessions/session", locals: { session: self } }
   after_destroy_commit { broadcast_remove_to :sessions_list, target: self }
 
+  broadcasts_to ->(session) { :exports_list }
+
   belongs_to :event
+  belongs_to :ai_theme, optional: true
+
   has_many :raw, dependent: :destroy
   has_many :export, dependent: :destroy
 

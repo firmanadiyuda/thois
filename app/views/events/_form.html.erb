@@ -19,13 +19,17 @@
       <%= render(RadioButtonComponent.new(
         form: form,
         name: "booth_type",
-        options: [["photobooth", "Photobooth"], ["videobooth", "360 Videobooth"]],
+        options: [
+          ["photobooth", "Photobooth"],
+          ["videobooth", "360 Videobooth"],
+          ["ai_photobooth", "AI Photobooth"]],
         data: { action: "change->booth-type#toggleVisibility" } # memicu controller pada perubahan
       )) %>
     </div>
 
     <div class="grid gap-5">
       <div data-booth-type-target="photoboothForm"> <%= render "/photobooths/form", form: form %> </div>
+      <div data-booth-type-target="aiPhotoboothForm"> <%= render "/ai_photobooths/form", form: form %> </div>
     </div>
   </div>
 

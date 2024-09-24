@@ -1,0 +1,48 @@
+<div data-controller="select-theme">
+  <div class="bg-black text-white h-screen w-full relative">
+    <div class="h-full w-full relative flex items-center justify-center">
+      <div class="grid grid-cols-12 w-full h-full">
+        <div class="col-span-8 bg-neutral-900 flex items-center justify-center">
+          <div class="m-auto">
+            <!--<input type="hidden" value="<%#= @event.photobooth.overlay_layout %>" data-select-photo-target="canvasDataField" />-->
+            <%= image_tag(@session.export.first.filename_url + "?v=#{@session.export.first.updated_at.to_i}", class: "h-screen pb-28 pt-20", data: { select_photo_target: 'overlayImg' } ) if @session.export.first.filename_url.present? %>
+            <%#= image_tag("/", alt: "Overlay Image", data: { select_photo_target: 'overlayImg' }, style:"display: none" ) if !@event.ai_photobooth.overlay.present? %>
+<!--            <div class="relative h-full w-full" data-select-photo-target="container">
+              <canvas id="overlayCanvas" data-select-photo-target="overlayCanvas" class="border border-black w-full h-full"></canvas>
+            </div>-->
+          </div>
+          <div class="absolute flex gap-10 font-bold text-2xl bottom-0 text-black">
+            <%= link_to event_ai_photobooth_liveview_path, id: "previous-button" do %>
+              <div class=" bg-white px-10 py-3 rounded-t-xl">
+                <- Previous
+              </div>
+            <% end %>
+            <button data-select-theme-target="finishButton" data-action="click->select-theme#finish">
+              <div id="finish-button" class="bg-green-800 border-t-2 border-x-2 border-white text-white shadow-xl shadow-green-500 px-10 py-3 rounded-t-xl">
+                Finish ✓
+              </div>
+            </button>
+          </div>
+      
+        </div>
+        <div class="h-full col-span-4 border-l bg-black border-neutral-700 overflow-y-auto">
+          <div class="h-full grid grid-cols-2 gap-5 p-5 place-items-center">
+            <% @selected_themes.each_with_index do |ai_theme, index| %>
+              <div class="">
+                <button data-action="click->select-theme#selectTheme">
+                  <%= tag.img src: ai_theme.preview, id: "ai-theme-#{ai_theme.id}", class: 'w-full rounded-xl object-contain', data: { select_theme_target: 'aiTheme', id: ai_theme.id, index: index } %>
+                </button>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <%= form_with url: "finish", data: { select_theme_target: 'selectedThemeForm' }, class: "hidden" do |form| %>
+    <%= form.text_field :selected_theme, data: { select_theme_target: 'selectedThemeField' } %>
+  <% end %>
+
+</div>

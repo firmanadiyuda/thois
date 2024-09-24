@@ -11,13 +11,34 @@ Rails.application.routes.draw do
       post "connect"
       post "finish"
       get "finish_operator"
-      # get "/print_photo/:session_id", to: "photobooths#print"
       resources :sessions do
         post "print_photo", to: "photobooths#print_photo"
         post "retry", to: "photobooths#retry"
       end
     end
 
+    resources :ai_photobooths do
+      get "liveview"
+      get "liveview_operator"
+      post "capture"
+      get "select_theme"
+      get "select_photo_operator"
+      post "select_photo_operator/:id", to: "photobooths#select_photo_operator_id"
+      post "toggle_liveview"
+      post "connect"
+      post "finish"
+      get "finish_operator"
+      get "gallery"
+      resources :sessions do
+        post "print_photo", to: "ai_photobooths#print_photo"
+        post "print_qr", to: "ai_photobooths#print_qr"
+        post "retry", to: "ai_photobooths#retry"
+      end
+      resources :ai_themes do
+        post "pin", to: "ai_themes#pin", as: "pin"
+        post "unpin", to: "ai_themes#unpin", as: "unpin"
+      end
+    end
 
     resources :videobooths
     resources :sessions do

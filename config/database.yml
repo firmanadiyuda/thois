@@ -18,10 +18,8 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  <% if ENV["DB_HOST"] %>
-  host: <%= ENV["DB_HOST"] {localhost}%>
-  username: thois
-  password: <%= Rails.application.credentials.db.local.password %>
+  <% if Rails.application.credentials.db.local.host %>
+  host: <%= Rails.application.credentials.db.local.host {localhost}%>
   <% end %>
 
 

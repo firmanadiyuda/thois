@@ -4,11 +4,6 @@ class VideoboothJob < ApplicationJob
   sidekiq_options retry: false
 
   def perform(session)
-    MongodbService.new(session, nil).call
-      # if !session.raw.first.present?
-      DownloadvideoboothService.new(session).call
-    # end
-    # CreatevideoboothService.new(session).call
-    # UploadService.new(session).call
+    DownloadvideoboothService.new(session).call
   end
 end

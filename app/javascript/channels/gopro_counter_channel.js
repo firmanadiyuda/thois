@@ -1,12 +1,15 @@
 import consumer from "channels/consumer"
 
-const eventId = document.querySelector("[data-event-id]").dataset.eventId;
-const counterElement = document.querySelector("#counter");
+var eventId = null;
+var counterElement = null;
+if (document.querySelector("[data-event-id]")) {
+  eventId = document.querySelector("[data-event-id]").dataset.eventId;
+  counterElement = document.querySelector("#counter");
+}
 
 consumer.subscriptions.create({channel:"GoproCounterChannel", event_id: eventId }, {
   connected() {
     // Called when the subscription is ready for use on the server
-    // console.log("sgsdg")
   },
 
   disconnected() {

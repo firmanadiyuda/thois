@@ -12,8 +12,8 @@ class DownloadvideoboothService
 
     counter = sprintf("%06d", @session.gopro_counter)
 
-    # url = "http://10.5.5.9:8080/videos/DCIM/100GOPRO/GH#{counter}.MP4"
-    url = "http://192.168.1.2:8080/GH#{counter}.MP4"
+    url = "http://10.5.5.9:8080/videos/DCIM/100GOPRO/GH#{counter}.MP4"
+    # url = "http://192.168.1.2:8080/GH#{counter}.MP4"
     file_path = "tmp/#{SecureRandom.uuid}.mp4"
 
     # Membuat koneksi dengan Faraday
@@ -25,11 +25,12 @@ class DownloadvideoboothService
     begin
       # Mendapatkan informasi size file dari header
       response = conn.head(url) do |req|
-        req.options.open_timeout = 5  # Timeout untuk membuka koneksi
-        # req.options.timeout = 5       # Timeout untuk menunggu respons
+        req.options.open_timeout = 5 # Timeout untuk membuka koneksi
+        req.options.timeout = 120 # Timeout untuk menunggu respons
       end
 
       total_size = response.headers["content-length"].to_i
+      raise "File not found!" if total_size == 0
       progress = 0
       overall_received_bytes = 0
       last_received_bytes = 0
@@ -52,10 +53,10 @@ class DownloadvideoboothService
           total_size_mb = ((total_size / 1000) / 1000).round(1)
           overall_received_mb = ((overall_received_bytes / 1000) / 1000).round(1)
 
-          # puts @session.id
-          puts "Progress: #{progress.round(0)}% | #{overall_received_mb}MB/#{total_size_mb}MB | #{download_speed_mbps}MB/s"
-          ActionCable.server.broadcast("progress_channel_#{@session.id}", {
-            progress: progress
+          # puts "Progress: #{progress.round(0)}% | #{overall_received_mb}MB/#{total_size_mb}MB | #{download_speed_mbps}MB/s"
+          ActionCable.server.broadcast("progress_channel_#{@event.id}", {
+            progress: progress.to_i,
+            session_id: @session.id
           })
           sleep 1  # Menampilkan progres tiap 1 detik
         end
@@ -71,6 +72,13 @@ class DownloadvideoboothService
             # Update progres
             overall_received_bytes += chunk.size
             progress = (overall_received_bytes.to_f / total_size) * 100
+            if progress.to_i == 100
+              ActionCable.server.broadcast("progress_channel_#{@event.id}", {
+                progress: progress.to_i,
+                session_id: @session.id
+              })
+            else
+            end
           end
         end
       end
@@ -80,20 +88,31 @@ class DownloadvideoboothService
       @raw.save
       File.delete(file_path)
 
+    rescue StandardError => e
+      @session.status = "failed"
+      @session.error = e.message
+      @session.save
+      progress_thread.kill if progress_thread
+      return # rubocop:disable Style/RedundantReturn
+
     rescue Faraday::TimeoutError
       # puts "Request timed out!"
       @session.status = "failed"
       @session.save
-      progress_thread.kill
+      progress_thread.kill if progress_thread
+      return # rubocop:disable Style/RedundantReturn
 
     rescue Faraday::ConnectionFailed => e
       # puts "Connection failed: #{e.message}"
       @session.status = "failed"
       @session.save
-      progress_thread.kill
+      progress_thread.kill if progress_thread
+      return # rubocop:disable Style/RedundantReturn
 
     ensure
-      progress_thread.kill
+      progress_thread.kill if progress_thread
     end
+
+    CreatevideoboothService.new(@session).call
   end
 end

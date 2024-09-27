@@ -1,12 +1,14 @@
 import consumer from "channels/consumer"
 
-const sessionId = document.querySelector("[data-session-id]").dataset.sessionId;
-const progressElement = document.querySelector("#progress");
+var eventId = null;
+var progressElement = null;
+if (document.querySelector("[data-event-id]")) {
+  eventId = document.querySelector("[data-event-id]").dataset.eventId;
+}
 
-consumer.subscriptions.create({ channel: "ProgressChannel", session_id: sessionId }, {
+consumer.subscriptions.create({ channel: "ProgressChannel", event_id: eventId }, {
   connected() {
     // Called when the subscription is ready for use on the server
-    console.log("Ready")
   },
 
   disconnected() {
@@ -15,7 +17,14 @@ consumer.subscriptions.create({ channel: "ProgressChannel", session_id: sessionI
 
   received(data) {
     // Called when there's incoming data on the websocket for this channel
-    console.log(data)
-    progressElement.textContent = `${data.progress}%`;
+    const sessionId = data.session_id
+    progressElement = document.querySelector("#progress_" + sessionId);
+    if (progressElement) {
+      if (data.progress >= 100) {
+        progressElement.textContent = "";
+      } else {
+        progressElement.textContent = `${data.progress}%`;
+      }
+    }
   }
 });

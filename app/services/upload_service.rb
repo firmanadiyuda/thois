@@ -48,6 +48,6 @@ class UploadService
     @session.save
 
     # Update Mongodb
-    MongodbService.new(@session, @update_data).call
+    # MongodbService.new(@session, @update_data).call
   end
 end

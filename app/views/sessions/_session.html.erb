@@ -38,8 +38,9 @@
   <td class="p-2"><%= local_time(session.created_at, "%H:%M | %-d %B %Y") %></td>
   <td class="p-2">
     <%= session.status %> 
-    <div data-session-id="<%= session.id %>" class="m-auto">
-      <span id="progress"></span>
+    <%= ": #{session.error}" if session.status == 'failed' %>
+    <div data-progress-session-id="<%= session.id %>" class="m-auto">
+      <span id="progress_<%=session.id%>"></span>
     </div>
   </td>
   <td class="flex gap-2 p-2 bg-neutral-100 justify-end ml-auto">

@@ -37,15 +37,18 @@ class CreatevideoboothService
 
     options = {
       resolution: "1080x1920",
+      threads: 1,
       custom: [ "-i", overlay, "-i", overlay_video, "-i", music, "-filter_complex", ffmpeg_setting, "-map", "[out]", "-map", "[aout]", "-crf", 30, "-r", 30, "-pix_fmt", "yuv420p" ]
     }
 
     output_path = Rails.root.join("tmp", "#{uuid}.mp4")
 
     movie.transcode(output_path.to_s, options) do |progress|
-      puts "Transcoding... #{(progress * 100).round(2)}%"
-      ActionCable.server.broadcast("progress_channel_#{@session.id}", {
-        progress: progress
+      # puts "Transcoding... #{(progress * 100).round(2)}%"
+      progress = (progress * 100).round(2)
+      ActionCable.server.broadcast("progress_channel_#{@event.id}", {
+        progress: progress.to_i,
+        session_id: @session.id
       })
     end
 
@@ -55,5 +58,7 @@ class CreatevideoboothService
 
     File.delete(output_path.to_s)
     @raw.destroy!
+
+    UploadService.new(@session).call
   end
 end

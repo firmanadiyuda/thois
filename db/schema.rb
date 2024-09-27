@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_22_090310) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_26_175851) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -90,8 +90,25 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_22_090310) do
     t.text "error"
     t.bigint "event_id", null: false
     t.bigint "ai_theme_id"
+    t.integer "gopro_counter"
     t.index ["ai_theme_id"], name: "index_sessions_on_ai_theme_id"
     t.index ["event_id"], name: "index_sessions_on_event_id"
+  end
+
+  create_table "videobooths", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "counter", default: 0
+    t.string "overlay"
+    t.string "overlay_video"
+    t.boolean "use_overlay_video", default: false
+    t.string "music"
+    t.boolean "use_music", default: false
+    t.integer "quality", default: 0
+    t.string "slowmo_one", default: "02.00"
+    t.string "slowmo_two", default: "07.00"
+    t.bigint "event_id"
+    t.index ["event_id"], name: "index_videobooths_on_event_id"
   end
 
   add_foreign_key "ai_photobooths", "events"
@@ -100,4 +117,5 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_22_090310) do
   add_foreign_key "raws", "sessions"
   add_foreign_key "sessions", "ai_themes"
   add_foreign_key "sessions", "events"
+  add_foreign_key "videobooths", "events"
 end

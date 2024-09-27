@@ -15,5 +15,6 @@ export default class extends Controller {
 
     this.photoboothFormTarget.style.display = selectedValue == "photobooth" ? "block" : "none";
     this.aiPhotoboothFormTarget.style.display = selectedValue == "ai_photobooth" ? "block" : "none";
+    this.videoboothFormTarget.style.display = selectedValue == "videobooth" ? "block" : "none";
   }
 }

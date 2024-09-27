@@ -13,10 +13,11 @@ ImageMagick
 Redis
 libgphoto2
 
-sudo apt install postgresql-client libpq-dev cups libcups2 libcups2-dev libgphoto2-dev gphoto2 libyaml-dev libffi-dev
+sudo apt install ruby-build postgresql-client libpq-dev cups libcups2 libcups2-dev libgphoto2-dev gphoto2 libyaml-dev libffi-dev
 
 sudo service cups start
 
+sudo usermod -aG lpadmin $USER
 
 * Configuration
 

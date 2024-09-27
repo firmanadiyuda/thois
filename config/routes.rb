@@ -40,7 +40,18 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :videobooths
+    resources :videobooths do
+      post "preprocess_video"
+      post "increment_counter"
+      post "decrement_counter"
+      resources :sessions do
+        post "process_video", to: "videobooths#process_video"
+        post "increment_session_counter", to: "videobooths#increment_session_counter"
+        post "decrement_session_counter", to: "videobooths#decrement_session_counter"
+        post "print_qr", to: "videobooths#print_qr"
+      end
+    end
+
     resources :sessions do
       # resources :export
     end

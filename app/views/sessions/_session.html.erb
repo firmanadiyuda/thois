@@ -23,3 +23,28 @@
   </td>
 </tr>
 <% end %>
+
+<% if session.event.booth_type == "videobooth" %>
+<tr id=<%= dom_id(session) %> class="bg-neutral-100 border-b border-neutral-300">
+  <td class="p-2"><%= SqidsService.new([ session.id ]).call %></td>
+  <td class="p-2 flex">
+  <%= button_to "-", event_videobooth_session_decrement_session_counter_path(session.event, session.event.photobooth, session), class: "border border-black bg-neutral-800 py-0 px-2 text-white text-md" %>
+  <div class="border border-black px-2 py-0 text-md">
+    <%= session.gopro_counter %> 
+    </div>
+  <%= button_to "+", event_videobooth_session_increment_session_counter_path(session.event, session.event.photobooth, session), class: "border border-black bg-neutral-800 py-0 px-2 text-white text-md" %>
+
+  </td>
+  <td class="p-2"><%= local_time(session.created_at, "%H:%M | %-d %B %Y") %></td>
+  <td class="p-2">
+    <%= session.status %> 
+    <div data-session-id="<%= session.id %>" class="m-auto">
+      <span id="progress"></span>
+    </div>
+  </td>
+  <td class="flex gap-2 p-2 bg-neutral-100 justify-end ml-auto">
+    <%= button_to "PROCESS", event_videobooth_session_process_video_path(session.event, session.event.videobooth, session), class: "bg-neutral-900 border border-black rounded-lg py-2 px-2 font-bold text-white text-xs"%>
+    <%= button_to "PRINT QR", event_videobooth_session_print_qr_path(session.event, session.event.videobooth, session), class: "bg-neutral-100 border border-black rounded-lg py-2 px-2 font-bold text-black text-xs"%>
+  </td>
+</tr>
+<% end %>

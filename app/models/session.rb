@@ -11,5 +11,5 @@ class Session < ApplicationRecord
   has_many :raw, dependent: :destroy
   has_many :export, dependent: :destroy
 
-  enum :status, [ :failed, :completed, :pending, :processing, :uploading, :capturing ]
+  enum :status, [ :failed, :completed, :queued, :processing, :uploading, :capturing, :pending, :downloading ]
 end

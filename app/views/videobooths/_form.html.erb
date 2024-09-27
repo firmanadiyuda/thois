@@ -1,21 +1,33 @@
 <div class="grid gap-5">
   <%= form.fields_for :videobooth do |config_form| %>
-    <%= render(InputComponent.new(form: config_form, type: "number_field", label: "QR Counter", data: "qr_counter")) %>
-    <%= render(InputComponent.new(form: config_form, type: "number_field", label: "Camera Counter", data: "camera_counter")) %>
-    <%= render(InputComponent.new(form: config_form, type: "text_field", label: "GoPro IP Address", data: "gopro_ip")) %>
+    <%= render(InputComponent.new(form: config_form, type: "number_field", label: "GoPro Counter", data: "counter")) %>
+    <%= render(InputComponent.new(form: config_form, type: "text_field", label: "Slowmo 1", data: "slowmo_one")) %>
+    <%= render(InputComponent.new(form: config_form, type: "text_field", label: "Slowmo 2", data: "slowmo_two")) %>
+    <%#= render(InputComponent.new(form: config_form, type: "number_field", label: "Camera Counter", data: "camera_counter")) %>
+    <%#= render(InputComponent.new(form: config_form, type: "text_field", label: "GoPro IP Address", data: "gopro_ip")) %>
     <%= render(RadioButtonComponent.new(
       form: config_form,
       name: "quality",
       options: [["fhd", "Full HD"], ["hd", "HD"]],
     )) %>
-    <%= image_tag(config_form.object.overlay_url + "?#{SecureRandom.uuid}", alt: "Overlay Image") if config_form.object.overlay.present? %>
+    <%#= image_tag(config_form.object.overlay_url + "?#{SecureRandom.uuid}", alt: "Overlay Image") if config_form.object.overlay.present? %>
 
-    <%= config_form.file_field :overlay %>
-    <%= config_form.object.remove_overlay %>
-    <label>
-      <%= config_form.check_box :remove_overlay %>
-      Remove overlay
-    </label>
-    <%= config_form.file_field :music %>
+    <div data-controller="videobooth-form">
+      Overlay
+      <%= config_form.file_field :overlay, data: { videobooth_form_target: 'overlayInput' } %>
+      <%= image_tag(config_form.object.overlay_url + "?v=#{config_form.object.updated_at.to_i}", class: "max-w-sm", data: { videobooth_form_target: 'overlayImg' } ) if config_form.object.overlay.present? %>
+      <%= image_tag("", class: "max-w-sm", data: { videobooth_form_target: 'overlayImg' }) if !config_form.object.overlay.present? %>
+      
+      Overlay Video
+      <%= config_form.file_field :overlay_video, data: { videobooth_form_target: 'overlayVideoInput' } %>
+      <%= video_tag(config_form.object.overlay_video_url + "?v=#{config_form.object.updated_at.to_i}", controls: true, class: "max-w-sm", data: { videobooth_form_target: 'overlayVideo' } ) if config_form.object.overlay_video.present? %>
+      <%= video_tag("", controls: true, class: "max-w-sm", data: { videobooth_form_target: 'overlayVideo' }) if !config_form.object.overlay_video.present? %>
+
+      Music
+      <%= config_form.file_field :music, data: { videobooth_form_target: 'musicInput' } %>
+      <%= audio_tag(config_form.object.music_url + "?v=#{config_form.object.updated_at.to_i}", controls: true, class: "max-w-sm", data: { videobooth_form_target: 'music' } ) if config_form.object.music.present? %>
+      <%= audio_tag("", controls: true, class: "max-w-sm", data: { videobooth_form_target: 'music' }) if !config_form.object.music.present? %>
+    </div>
+
   <% end %>
 </div>

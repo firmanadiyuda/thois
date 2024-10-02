@@ -148,7 +148,7 @@ GEM
     formatador (1.1.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    i18n (1.14.5)
+    i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     image_processing (1.13.0)
       mini_magick (>= 4.9.5, < 5)
@@ -167,7 +167,7 @@ GEM
     json (2.7.2)
     language_server-protocol (3.17.0.3)
     local_time (3.0.2)
-    logger (1.6.0)
+    logger (1.6.1)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -362,7 +362,7 @@ GEM
     unicode-display_width (2.5.0)
     uri (0.13.1)
     useragent (0.16.10)
-    view_component (3.13.0)
+    view_component (3.16.0)
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
@@ -421,7 +421,7 @@ DEPENDENCIES
   tailwindcss-rails (~> 2.7)
   turbo-rails
   tzinfo-data
-  view_component (~> 3.13)
+  view_component (~> 3.16)
   web-console
 
 BUNDLED WITH

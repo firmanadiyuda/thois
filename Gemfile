@@ -56,7 +56,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "tailwindcss-rails", "~> 2.7"
+gem "tailwindcss-rails", "~> 3.0"
 gem "view_component", "~> 3.13"
 gem "carrierwave", "~> 3.0.7"
 gem "ffi-gphoto2", "~> 0.10.0"

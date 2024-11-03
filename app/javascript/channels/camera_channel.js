@@ -96,7 +96,7 @@ consumer.subscriptions.create({ channel: "CameraChannel" }, {
     }
 
     // Received countdown duration
-    if (data.countdown_duration) {
+    if (data.countdown_duration && startButton) {
         startButton.classList.add('hidden')
         nextButton.classList.add('hidden')
         totalCapturedELement.classList.add('hidden')

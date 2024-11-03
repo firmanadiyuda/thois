@@ -5,14 +5,48 @@ class DownloadvideoboothService
     @event = Event.find(@session.event_id)
   end
 
+  # Method untuk mengaktifkan turbo transfer
+  def enable_turbo_transfer
+    # Panggil API untuk mengaktifkan turbo transfer
+    puts "Mengaktifkan mode turbo transfer..."
+    # ... Panggil API-mu di sini ...
+    url = "http://10.5.5.9:8080/gopro/media/turbo_transfer?p=1"
+    response = Faraday.get(url)
+  end
+
+  # Method untuk menonaktifkan turbo transfer
+  def disable_turbo_transfer
+    # Panggil API untuk menonaktifkan turbo transfer
+    puts "Menonaktifkan mode turbo transfer..."
+    # ... Panggil API-mu di sini ...
+    url = "http://10.5.5.9:8080/gopro/media/turbo_transfer?p=0"
+    response = Faraday.get(url)
+  end
+
+  # Pengecekan status turbo transfer
+  def check_and_toggle_turbo
+    # Ambil nilai counter saat ini
+    redis = Sidekiq.redis_pool
+    active_jobs = redis.get("active_download_jobs").to_i
+
+    # Aktifkan turbo jika ini adalah job pertama yang berjalan
+    enable_turbo_transfer if active_jobs == 1
+
+    # Nonaktifkan turbo jika semua job selesai
+    disable_turbo_transfer if active_jobs == 0
+  end
+
   def call
+    # redis = Sidekiq.redis_pool
+    # redis.incr("active_download_jobs")
+    # check_and_toggle_turbo
+
     @session.status = "downloading"
     @session.save
 
-
     counter = sprintf("%06d", @session.gopro_counter)
 
-    url = "http://10.5.5.9:8080/videos/DCIM/100GOPRO/GH#{counter}.MP4"
+    url = "http://10.5.5.9:8080/videos/DCIM/100GOPRO/GX#{counter}.MP4"
     # url = "http://192.168.1.2:8080/GH#{counter}.MP4"
     file_path = "tmp/#{SecureRandom.uuid}.mp4"
 
@@ -60,6 +94,10 @@ class DownloadvideoboothService
           })
           sleep 1  # Menampilkan progres tiap 1 detik
         end
+
+        # ensure
+        #   redis.decr("active_download_jobs")
+        #   check_and_toggle_turbo
       end
 
       File.open(file_path, "wb") do |file|

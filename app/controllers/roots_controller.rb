@@ -3,10 +3,10 @@ require "gphoto2"
 
 class RootsController < ApplicationController
   # GET /
-  def tes
-    # @events = Event.all
-    # puts "Hello"
-    # @cameras = GPhoto2::Camera.all
+  def root
+    respond_to do |format|
+      format.html { redirect_to events_url }
+    end
   end
 
   def create

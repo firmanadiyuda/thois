@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class LinktoComponent < ViewComponent::Base
-  def initialize(path:, theme: 'primary', size: 'md')
+class ButtontoComponent < ViewComponent::Base
+  def initialize(show_spinner: true, path: nil, theme: 'primary', size: 'md', confirm: nil, method: "post")
     if size == 'sm'
       @size = 'px-3 py-1'
     elsif size == 'md'
@@ -20,6 +20,9 @@ class LinktoComponent < ViewComponent::Base
       @class = "text-black from-yellow-400 via-yellow-500 to-yellow-600 hover:shadow-yellow-500/50 focus:ring-yellow-800 shadow-yellow-800/50 #{@size}" 
     end
 
+    @confirm = confirm
+    @method = method
+    @show_spinner = show_spinner
     @path = path
   end
 end

@@ -9,6 +9,7 @@ class EventsController < ApplicationController
   # GET /events/1 or /events/1.json
   def show
     @sessions = @event.session.order(created_at: :desc)
+    @sessioncount = @event.session.count
   end
 
   # GET /events/new

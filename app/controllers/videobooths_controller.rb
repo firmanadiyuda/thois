@@ -119,7 +119,7 @@ class VideoboothsController < ApplicationController
     escpos_data = @printer.to_escpos
 
     # Send data to printer via cups
-    IO.popen("lp -d thermal-printer", "w") do |lp|
+    IO.popen("lp -d vsc-thermal-printer", "w") do |lp|
       lp.write(escpos_data)
     end
   end
@@ -142,6 +142,21 @@ class VideoboothsController < ApplicationController
 
     # Print to printer
     # system("lp -d #{printer.name} -o PageSize=#{paper.capitalize} -o scaling=20 #{@export.filename.current_path}")
+  end
+
+  def delete_session
+    session_id = params[:session_id]
+    @session = Session.find(params[:session_id])
+    @session.destroy!
+  end
+
+  def gallery
+    @event = Event.find(params[:event_id])
+    # @sessions = @event.session.includes(:export).where(export: { filetype: "video" })
+    @exports = Export.includes(:session).where(filetype: "video", sessions: { event_id: @event.id }).order(created_at: :desc)
+
+    # @sessions = @event.session.order(created_at: :desc)
+    render layout: "gallery"
   end
 
   private

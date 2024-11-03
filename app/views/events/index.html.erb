@@ -10,7 +10,9 @@
       <div class="text-4xl"><b>Events</b></div>
     </div>
     <div class="text-right">
-      <%= render(LinktoComponent.new(path: new_event_path)) do %> New event <% end %>
+      <%= render(LinktoComponent.new(path: new_event_path)) do %>
+        <i class="ri-add-line"></i> New event
+      <% end %>
     </div>
   </div>
 

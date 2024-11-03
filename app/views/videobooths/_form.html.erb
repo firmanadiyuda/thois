@@ -1,32 +1,80 @@
 <div class="grid gap-5">
   <%= form.fields_for :videobooth do |config_form| %>
-    <%= render(InputComponent.new(form: config_form, type: "number_field", label: "GoPro Counter", data: "counter")) %>
-    <%= render(InputComponent.new(form: config_form, type: "text_field", label: "Slowmo 1", data: "slowmo_one")) %>
-    <%= render(InputComponent.new(form: config_form, type: "text_field", label: "Slowmo 2", data: "slowmo_two")) %>
-    <%#= render(InputComponent.new(form: config_form, type: "number_field", label: "Camera Counter", data: "camera_counter")) %>
-    <%#= render(InputComponent.new(form: config_form, type: "text_field", label: "GoPro IP Address", data: "gopro_ip")) %>
-    <%= render(RadioButtonComponent.new(
-      form: config_form,
-      name: "quality",
-      options: [["fhd", "Full HD"], ["hd", "HD"]],
-    )) %>
-    <%#= image_tag(config_form.object.overlay_url + "?#{SecureRandom.uuid}", alt: "Overlay Image") if config_form.object.overlay.present? %>
 
-    <div data-controller="videobooth-form">
-      Overlay
-      <%= config_form.file_field :overlay, data: { videobooth_form_target: 'overlayInput' } %>
-      <%= image_tag(config_form.object.overlay_url + "?v=#{config_form.object.updated_at.to_i}", class: "max-w-sm", data: { videobooth_form_target: 'overlayImg' } ) if config_form.object.overlay.present? %>
-      <%= image_tag("", class: "max-w-sm", data: { videobooth_form_target: 'overlayImg' }) if !config_form.object.overlay.present? %>
-      
-      Overlay Video
-      <%= config_form.file_field :overlay_video, data: { videobooth_form_target: 'overlayVideoInput' } %>
-      <%= video_tag(config_form.object.overlay_video_url + "?v=#{config_form.object.updated_at.to_i}", controls: true, class: "max-w-sm", data: { videobooth_form_target: 'overlayVideo' } ) if config_form.object.overlay_video.present? %>
-      <%= video_tag("", controls: true, class: "max-w-sm", data: { videobooth_form_target: 'overlayVideo' }) if !config_form.object.overlay_video.present? %>
+    <div class="grid grid-cols-1 w-full text-sm" data-controller="videobooth-form">
+      <div class="grid grid-cols-2 border border-neutral-700/70 w-full rounded-t-xl">
+        <div class="w-full bg-neutral-900 p-5 rounded-tl-xl">
+          <b>GoPro Counter</b> <br>
+          <span class="text-neutral-400">Set the current counter of GoPro.</span>
+        </div>
+        <div class="w-full bg-neutral-800 shadow-xl shadow-black p-5 rounded-tr-xl">
+          <%= render(InputComponent.new(form: config_form, type: "number_field", label: "GoPro Counter", data: "counter")) %>
+        </div>
+      </div>
 
-      Music
-      <%= config_form.file_field :music, data: { videobooth_form_target: 'musicInput' } %>
-      <%= audio_tag(config_form.object.music_url + "?v=#{config_form.object.updated_at.to_i}", controls: true, class: "max-w-sm", data: { videobooth_form_target: 'music' } ) if config_form.object.music.present? %>
-      <%= audio_tag("", controls: true, class: "max-w-sm", data: { videobooth_form_target: 'music' }) if !config_form.object.music.present? %>
+      <div class="grid grid-cols-2 border border-neutral-700/70 w-full">
+        <div class="w-full bg-neutral-900 p-5">
+          <b>Slow Motion Timing</b> <br>
+          <span class="text-neutral-400">Set timing of the slow motion. There's currently 2 slow motion timing with 3s durations each.</span>
+        </div>
+        <div class="w-full grid grid-cols-2 gap-5 bg-neutral-800 shadow-xl shadow-black p-5">
+          <%= render(InputComponent.new(form: config_form, type: "text_field", label: "Slowmo 1", data: "slowmo_one")) %>
+          <%= render(InputComponent.new(form: config_form, type: "text_field", label: "Slowmo 2", data: "slowmo_two")) %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 border border-neutral-700/70 w-full">
+        <div class="w-full bg-neutral-900 p-5">
+          <b>Quality</b> <br>
+          <span class="text-neutral-400">Choose desired output quality.</span>
+        </div>
+        <div class="w-full bg-neutral-800 shadow-xl shadow-black p-5">
+          <%= render(RadioButtonComponent.new(
+            form: config_form,
+            name: "quality",
+            options: [["fhd", "Full HD"], ["hd", "HD"]],
+          )) %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 border border-neutral-700/70 w-full">
+        <div class="w-full bg-neutral-900 p-5">
+          <b>Overlay</b> <br>
+          <span class="text-neutral-400">Set overlay image. PNG format only.</span>
+        </div>
+        <div class="w-full bg-neutral-800 shadow-xl shadow-black p-5">
+          <%= config_form.file_field :overlay, data: { videobooth_form_target: 'overlayInput' } %>
+          <br><br>
+          <%= image_tag(config_form.object.overlay_url + "?v=#{config_form.object.updated_at.to_i}", class: "max-w-56", data: { videobooth_form_target: 'overlayImg' } ) if config_form.object.overlay.present? %>
+          <%= image_tag("", class: "max-w-56", data: { videobooth_form_target: 'overlayImg' }) if !config_form.object.overlay.present? %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 border border-neutral-700/70 w-full">
+        <div class="w-full bg-neutral-900 p-5">
+          <b>Overlay Video</b> <br>
+          <span class="text-neutral-400">Set overlay video image. MP4 format only.</span>
+        </div>
+        <div class="w-full bg-neutral-800 shadow-xl shadow-black p-5">
+          <%= config_form.file_field :overlay_video, data: { videobooth_form_target: 'overlayVideoInput' } %>
+          <br><br>
+          <%= video_tag(config_form.object.overlay_video_url + "?v=#{config_form.object.updated_at.to_i}", controls: true, class: "max-w-56", data: { videobooth_form_target: 'overlayVideo' } ) if config_form.object.overlay_video.present? %>
+          <%= video_tag("", controls: true, class: "max-w-56", data: { videobooth_form_target: 'overlayVideo' }) if !config_form.object.overlay_video.present? %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 border border-neutral-700/70 rounded-b-xl w-full">
+        <div class="w-full bg-neutral-900 p-5 rounded-bl-xl">
+          <b>Music</b> <br>
+          <span class="text-neutral-400">Set music background. MP3 format only.</span>
+        </div>
+        <div class="w-full bg-neutral-800 shadow-xl shadow-black p-5 rounded-br-xl">
+          <%= config_form.file_field :music, data: { videobooth_form_target: 'musicInput' } %>
+          <br><br>
+          <%= audio_tag(config_form.object.music_url + "?v=#{config_form.object.updated_at.to_i}", controls: true, class: "max-w-sm", data: { videobooth_form_target: 'music' } ) if config_form.object.music.present? %>
+          <%= audio_tag("", controls: true, class: "max-w-sm", data: { videobooth_form_target: 'music' }) if !config_form.object.music.present? %>
+        </div>
+      </div>
     </div>
 
   <% end %>

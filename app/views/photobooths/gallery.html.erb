@@ -1,0 +1,28 @@
+<div class="relative" data-controller="gallery">
+  <div class="absolute gap-5 w-full h-screen bg-white z-10 flex flex-col items-center justify-center" data-gallery-target="qrelement">
+    <div class="text-center">
+      Scan the <b>QR Code</b> <br> to download your file
+    </div>
+    <div>
+      <img data-gallery-target="qrImage" id="qr-image" alt="QR Code" />
+    </div>
+    <button class="bg-neutral-900 text-white p-3 rounded-xl" data-action="click->gallery#toggleVisibility">
+      <- Back
+    </button>
+  </div>
+
+  <div class="grid grid-cols-12 bg-black text-white w-full min-h-screen">
+    <div class="col-span-12 absolute top-0 bottom-0 w-full overflow-y-auto bg-neutral-900">
+      <%= turbo_stream_from :export_list %>
+      <div id='all_exports' class=" grid grid-cols-3 gap-10 p-10">
+        <% @exports.each do |export| %>
+          <button data-action="click->gallery#showQR" data-export-url="<%= SqidsService.new([ export.session.id ]).call %>">
+            <%= render partial:"exports/export", locals: { export: export} %>
+          </button>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

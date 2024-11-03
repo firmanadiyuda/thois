@@ -1,4 +1,4 @@
-<div class="mt-5" data-controller="booth-type" data-action="change->booth-type#toggleVisibility">
+<div class="mt-5 mb-16" data-controller="booth-type" data-action="change->booth-type#toggleVisibility">
 <%= form_with(model: event) do |form| %>
   <% if event.errors.any? %>
     <div style="color: red">
@@ -12,30 +12,56 @@
     </div>
   <% end %>
 
-  <div class="grid gap-5">
-    <div class="grid gap-5">
-      <%= render(InputComponent.new(form: form, type: 'text_field', label: "Name", data: "name")) %>
-      <%= render(TextAreaComponent.new(form: form, label: "Description", data: "description")) %>
-      <%= render(RadioButtonComponent.new(
-        form: form,
-        name: "booth_type",
-        options: [
-          ["photobooth", "Photobooth"],
-          ["videobooth", "360 Videobooth"],
-          ["ai_photobooth", "AI Photobooth"]],
-        data: { action: "change->booth-type#toggleVisibility" } # memicu controller pada perubahan
-      )) %>
+  <div class="grid grid-cols-1 w-full text-sm" data-controller="videobooth-form">
+    <div class="grid grid-cols-2 border border-neutral-700/70 w-full rounded-t-xl">
+      <div class="w-full bg-neutral-900 p-5 rounded-tl-xl">
+        <b>Name</b> <br>
+        <span class="text-neutral-400">Set event name.</span>
+      </div>
+      <div class="w-full bg-neutral-800 shadow-xl shadow-black p-5 rounded-tr-xl">
+        <%= render(InputComponent.new(form: form, type: 'text_field', label: "Name", data: "name")) %>
+      </div>
+    </div>
+    
+    <div class="grid grid-cols-2 border border-neutral-700/70 w-full">
+      <div class="w-full bg-neutral-900 p-5">
+        <b>Description</b> <br>
+        <span class="text-neutral-400">Set event description.</span>
+      </div>
+      <div class="w-full bg-neutral-800 shadow-xl shadow-black p-5">
+        <%= render(TextAreaComponent.new(form: form, label: "Description", data: "description")) %>
+      </div>
     </div>
 
-    <div class="grid gap-5">
-      <div data-booth-type-target="photoboothForm"> <%= render "/photobooths/form", form: form %> </div>
-      <div data-booth-type-target="videoboothForm"> <%= render "/videobooths/form", form: form %> </div>
-      <div data-booth-type-target="aiPhotoboothForm"> <%= render "/ai_photobooths/form", form: form %> </div>
+    <div class="grid grid-cols-2 border border-neutral-700/70 rounded-b-xl w-full">
+      <div class="w-full bg-neutral-900 p-5 rounded-bl-xl">
+        <b>Booth Type</b> <br>
+        <span class="text-neutral-400">Choose event booth type.</span>
+      </div>
+      <div class="w-full bg-neutral-800 shadow-xl shadow-black p-5 rounded-br-xl">
+        <%= render(RadioButtonComponent.new(
+          form: form,
+          name: "booth_type",
+          options: [
+            ["photobooth", "Photobooth"],
+            ["videobooth", "360 Videobooth"],
+            ["ai_photobooth", "AI Photobooth"]],
+          data: { action: "change->booth-type#toggleVisibility" } # memicu controller pada perubahan
+        )) %>
+      </div>
     </div>
   </div>
 
+  <div class="grid gap-5 mt-16">
+    <div data-booth-type-target="photoboothForm"> <%= render "/photobooths/form", form: form %> </div>
+    <div data-booth-type-target="videoboothForm"> <%= render "/videobooths/form", form: form %> </div>
+    <div data-booth-type-target="aiPhotoboothForm"> <%= render "/ai_photobooths/form", form: form %> </div>
+  </div>
+
   <div class="mt-5">
-      <%= render(SubmitComponent.new(form: form)) do %> <%= submit_text %> <% end %>
+    <%= render(ButtontoComponent.new(theme: "secondary")) do %>
+      <i class="ri-save-3-line"></i>  <%= submit_text %>
+    <% end %>
   </div>
 <% end %>
 </div>

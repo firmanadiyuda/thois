@@ -14,15 +14,15 @@
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <script src="https://cdn.jsdelivr.net/npm/fabric@6.3.0/dist/index.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   </head>
 
-  <body class="bg-neutral-900 text-neutral-100 bg-[url('/background.svg')] bg-cover bg-fixed bg-center">
-    <main class="container mx-auto mt-28 px-5 flex-row">
+  <body class="bg-neutral-100 text-neutral-100 bg-[url('/background.svg')] bg-cover bg-fixed bg-center">
+    <main class="mx-auto flex-row">
       <%= yield %>
     </main>
   </body>

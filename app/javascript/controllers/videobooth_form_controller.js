@@ -6,9 +6,15 @@ export default class extends Controller {
 
   connect() {
     // Event listener for overlay and overlay changes in the input file field
-    this.overlayInputTarget.addEventListener('change', (event) => this.handleOverlayChange(event));
-    this.overlayVideoInputTarget.addEventListener('change', (event) => this.handleOverlayVideoChange(event));
-    this.musicInputTarget.addEventListener('change', (event) => this.handleMusicChange(event));
+    if (this.hasOverlayInputTarget) {
+      this.overlayInputTarget.addEventListener('change', (event) => this.handleOverlayChange(event));
+    }
+    if (this.hasOverlayVideoInputTaeget) {
+      this.overlayVideoInputTarget.addEventListener('change', (event) => this.handleOverlayVideoChange(event));
+    }
+    if (this.hasMusicInputTarget) {
+      this.musicInputTarget.addEventListener('change', (event) => this.handleMusicChange(event));
+    }
   }
 
   disconnect() {

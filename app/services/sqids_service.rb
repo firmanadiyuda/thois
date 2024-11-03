@@ -8,13 +8,13 @@ class SqidsService
     sqids = Sqids.new(alphabet: @sqids_alphabet)
     encoded = sqids.encode(@data)
 
-    if Rails.env.production?
-      encoded = encoded
-    elsif Rails.env.development?
-      encoded = "development-#{encoded}"
-    else
-      encoded = "test-#{encoded}"
-    end
+    # if Rails.env.production?
+    #   encoded = encoded
+    # elsif Rails.env.development?
+    #   encoded = "development/#{encoded}"
+    # else
+    #   encoded = "test-#{encoded}"
+    # end
 
     encoded
   end

@@ -35,9 +35,12 @@ class ExportUploader < CarrierWave::Uploader::Base
   # end
 
   # Create different versions of your uploaded files:
-  # version :thumb do
-  #   process resize_to_fit: [50, 50]
-  # end
+  version :thumb do 
+    process :process_thumb
+    def full_filename(for_file)
+      "thumb/thumb_#{for_file}"
+    end
+  end
 
   # Add an allowlist of extensions which are allowed to be uploaded.
   # For images you might use something like this:
@@ -49,5 +52,32 @@ class ExportUploader < CarrierWave::Uploader::Base
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   def filename
     "#{file.filename}"
+  end
+
+  private
+
+  # Proses transcode video ke resolusi rendah
+  def process_thumb
+    if model.filetype == "video"
+      media = FFMPEG::Media.new(current_path)
+      tmpfile = File.join(File.dirname(current_path), "thumb_#{file.filename}")
+      options = {
+        resolution: "270x480",
+        threads: 1,
+        custom: [ "-crf", 30, "-pix_fmt", "yuv420p" ]
+      }
+
+      # Atur ukuran video, di sini 320px lebar
+      media.transcode(tmpfile, options) do |progress|
+        progress = (progress * 100).round(2)
+        ActionCable.server.broadcast("progress_channel_#{model.session.event.id}", {
+          progress: progress.to_i,
+          session_id: model.session.id
+        })
+      end 
+      File.rename(tmpfile, current_path)
+    else
+      # process resize_to_fit: [50, 50]
+    end
   end
 end

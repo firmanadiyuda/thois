@@ -97,8 +97,18 @@ class PhotoboothsController < ApplicationController
   end
 
   def liveview
+    connect
     @event = Event.find(params[:event_id])
     @session = @event.session.find_or_create_by(status: "capturing")
+    render layout: "liveview"
+  end
+
+  def gallery
+    @event = Event.find(params[:event_id])
+    # @sessions = @event.session.includes(:export).where(export: { filetype: "video" })
+    @exports = Export.includes(:session).where(filetype: "video", sessions: { event_id: @event.id }).order(created_at: :desc)
+
+    # @sessions = @event.session.order(created_at: :desc)
     render layout: "liveview"
   end
 
@@ -107,7 +117,11 @@ class PhotoboothsController < ApplicationController
     @session = @event.session.find_or_create_by(status: "capturing")
 
     id = SqidsService.new([ @session.id ]).call
-    @qrurl = "tholee.my.id/dl/#{id}"
+    if Rails.env.production?
+      @qrurl = "tholee.my.id/d/#{id}"
+    elsif Rails.env.development?
+      @qrurl = "tholee.my.id/development/#{id}"
+    end
 
     render layout: "liveview"
   end
@@ -157,12 +171,6 @@ class PhotoboothsController < ApplicationController
 
     @new_session = @event.session.find_or_create_by(status: "capturing")
 
-    pdf_path = Rails.root.join("tmp", "print.pdf")
-
-    Prawn::Document.generate(pdf_path, page_size: [ 4.in, 6.in ]) do |pdf|
-      pdf.image @export.filename.current_path, fit: [ 4.in, 6.in ]
-    end
-
     # Dispatch Photobooth Job
     PhotoboothJob.perform_later(@session)
 
@@ -175,7 +183,13 @@ class PhotoboothsController < ApplicationController
       paper = @event.photobooth.paper
 
       # Print to printer
-      system("lp -d #{printer.name} -o PageSize=#{paper.capitalize} #{@export.filename.current_path}")
+      system("lp -d #{printer.name} -o PageSize=#{paper.capitalize} -o scaling=20 #{@export.filename.current_path}")
+      #
+      # pdf_path = Rails.root.join("tmp", "print.pdf")
+      # Prawn::Document.generate(pdf_path, page_size: [ 4 * 72, 6 * 72 ], margin: 0) do |pdf|
+      #   pdf.image @export.filename.current_path, fit: [ 4 * 72, 6 * 72 ]
+      # end
+      # system("lp -d #{printer.name} -o PageSize=#{paper.capitalize} -o scaling=20 #{pdf_path}")
     end
 
     File.delete(resized_image_path) if File.exist?(resized_image_path)
@@ -197,6 +211,12 @@ class PhotoboothsController < ApplicationController
 
     # Print to printer
     system("lp -d #{printer.name} -o PageSize=#{paper.capitalize} -o scaling=20 #{@export.filename.current_path}")
+
+    # pdf_path = Rails.root.join("tmp", "print.pdf")
+    # Prawn::Document.generate(pdf_path, page_size: [ 4 * 72, 6 * 72 ], margin: 0) do |pdf|
+    #   pdf.image @export.filename.current_path, fit: [ 4 * 72, 6 * 72 ]
+    # end
+    # system("lp -d #{printer.name} -o PageSize=#{paper.capitalize} -o scaling=20 #{pdf_path}")
   end
 
   def retry

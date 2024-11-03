@@ -3,5 +3,6 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "channels"
 import LocalTime from "local-time"
+import "flowbite"
 
 LocalTime.start()

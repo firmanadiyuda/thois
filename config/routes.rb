@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       post "connect"
       post "finish"
       get "finish_operator"
+      get "gallery"
       resources :sessions do
         post "print_photo", to: "photobooths#print_photo"
         post "retry", to: "photobooths#retry"
@@ -44,11 +45,13 @@ Rails.application.routes.draw do
       post "preprocess_video"
       post "increment_counter"
       post "decrement_counter"
+      get "gallery"
       resources :sessions do
         post "process_video", to: "videobooths#process_video"
         post "increment_session_counter", to: "videobooths#increment_session_counter"
         post "decrement_session_counter", to: "videobooths#decrement_session_counter"
         post "print_qr", to: "videobooths#print_qr"
+        post "delete_session", to: "videobooths#delete_session"
       end
     end
 
@@ -65,8 +68,8 @@ Rails.application.routes.draw do
   # get "camera/capture"
   get "camera/preview"
 
-  get "/tes", to: "roots#tes"
-  resources :roots, only: [ :create ]
+  get "/", to: "roots#root"
+  # resources :roots, only: [ :create ]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

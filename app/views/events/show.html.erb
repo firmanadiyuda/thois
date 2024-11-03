@@ -3,8 +3,14 @@
 <div id="events" class="w-full">
 
   <div class="grid grid-cols-2">
-    <div class="">
+    <div class="flex gap-2">
       <div class="text-4xl"><b><%= @event.name %></b></div>
+      <!--<div class="border border-zinc-500 text-zinc-500 rounded-lg text-xl p-1"><%#= @sessioncount %></div>-->
+      <div data-controller="session-count" data-session-count-event-id-value="<%= @event.id %>" class="flex border px-3 py-2 rounded-lg border-blue-500 text-sm">
+        <div data-event-id="<%= @event.id %>" class="m-auto">
+          <span data-session-count-target="count"><%= @sessioncount %></span>
+        </div>
+      </div>
     </div>
     <div class="flex justify-end text-right gap-2">
       <% if @event.booth_type == "ai_photobooth" %>
@@ -14,22 +20,29 @@
       <% end %>
 
       <% if @event.booth_type == "photobooth" %>
-        <%= render(LinktoComponent.new(path: event_ai_photobooth_liveview_path(@event, @event.photobooth))) do %> Live View <% end %>
+        <%= render(LinktoComponent.new(path: event_photobooth_liveview_path(@event, @event.photobooth))) do %> Live View <% end %>
         <%= render(LinktoComponent.new(path: event_photobooth_liveview_operator_path(@event, @event.photobooth))) do %> Operator <% end %>
+        <%= render(LinktoComponent.new(path: event_photobooth_gallery_path(@event, @event.photobooth))) do %> Gallery <% end %>
       <% end %>
 
       <% if @event.booth_type == "videobooth" %>
-        <%= button_to "Pre-process", event_videobooth_preprocess_video_path(@event, @event.videobooth), class: "bg-neutral-800 rounded-lg py-3 px-3 font-bold text-white text-md" %>
-        <%= button_to "-", event_videobooth_decrement_counter_path(@event, @event.videobooth), class: "bg-neutral-800 rounded-lg py-3 px-3 font-bold text-white text-md" %>
-        <div class="flex border-2 px-3 rounded-xl border-black/50">
+        <%= render(ButtontoComponent.new(path: event_videobooth_preprocess_video_path(@event, @event.videobooth), theme: "warning")) do %>
+          <i class="ri-play-list-2-fill"></i> Pre-process
+        <% end %>
+        <%= render(ButtontoComponent.new(path: event_videobooth_decrement_counter_path(@event, @event.videobooth), theme: "secondary")) do %>
+          <i class="ri-subtract-line"></i>
+        <% end %>
+
+        <div data-controller="gopro-counter" data-gopro-counter-event-id-value="<%= @event.id %>" class="flex border px-3 py-2 rounded-xl border-blue-500 text-sm">
           <div data-event-id="<%= @event.id %>" class="m-auto">
-            Counter: <span id="counter"><%= @event.videobooth.counter %></span>
+            Counter: <span data-gopro-counter-target="counter"><%= @event.videobooth.counter %></span>
           </div>
         </div>
-        <%= button_to "+", event_videobooth_increment_counter_path(@event, @event.videobooth), class: "bg-neutral-800 rounded-lg py-3 px-3 font-bold text-white text-md" %>
+        <%= render(ButtontoComponent.new(path: event_videobooth_increment_counter_path(@event, @event.videobooth), theme: "secondary")) do %> <i class="ri-add-line"></i><% end %>
+        <%= render(LinktoComponent.new(path: event_videobooth_gallery_path(@event, @event.videobooth))) do %> <i class="ri-gallery-view"></i> Gallery <% end %>
       <% end %>
       
-      <%= render(LinktoComponent.new(path: edit_event_path(@event))) do %> Edit <% end %>
+      <%= render(LinktoComponent.new(path: edit_event_path(@event))) do %> <i class="ri-settings-4-line"></i> Edit <% end %>
     </div>
   </div>
 
@@ -37,15 +50,18 @@
     <%= link_to "Events", events_path%> / <%= @event.name %>
   </div>
 
-  <div class="py-5 my-5">
-    <table id="all_sessions" class="w-full">
+  <div class="my-10 overflow-x-auto shadow-2xl shadow-black/70">
+    <table id="all_sessions" class="min-w-full table-auto border-collapse backdrop-blur-md">
       <thead>
         <tr>
-          <th class="bg-black/80 border-r border-neutral-400 text-white w-24 text-left p-2 rounded-tl-xl text-sm">ID</th>
-          <th class="bg-black/80 border-r border-neutral-400 text-white text-left p-2 text-sm">GOPRO COUNTER</th>
-          <th class="bg-black/80 border-r border-neutral-400 text-white text-left p-2 text-sm">DATE</th>
-          <th class="bg-black/80 border-r  border-neutral-400 text-white text-left p-2 text-sm">STATUS</th>
-          <th class="bg-black/80 text-white py-2 px-5 rounded-tr-xl text-sm text-right">ACTION</th>
+          <th class="bg-neutral-800 font-black text-neutral-400 text-left p-2 rounded-tl-xl text-sm min-w-16">ID</th>
+          <th class="bg-neutral-800 font-black text-neutral-400 text-center p-2 text-sm min-w-24">CODE</th>
+          <% if @event.booth_type == "videobooth" %>
+            <th class="bg-neutral-800 font-black text-neutral-400 text-center p-2 text-sm min-w-44">GOPRO COUNTER</th>
+          <% end %>
+          <th class="bg-neutral-800 font-black text-neutral-400 text-center p-2 text-sm min-w-52  ">DATETIME</th>
+          <th class="bg-neutral-800 font-black text-neutral-400 text-center p-2 text-sm min-w-44" data-controller="progress" data-progress-event-id-value="<%= @event.id %>">STATUS</th>
+          <th class="bg-neutral-800 font-black text-neutral-400 py-2 px-5 rounded-tr-xl text-sm text-right min-w-72">ACTION</th>
         </tr>
       </thead>
       <tbody>

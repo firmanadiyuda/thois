@@ -1,0 +1,33 @@
+<div class="relative" data-controller="gallery">
+  <div class="hidden absolute gap-5 w-full h-screen bg-white text-black z-10 flex items-center justify-center" data-gallery-target="qrelement">
+    <div class="relative flex items-center justify-center text-center w-full h-screen bg-zinc-900">
+      <%= video_tag("", autoplay: :autoplay, loop: :loop, muted: :muted, class: "max-w-sm rounded-2xl border-2 justify-center items-center m-auto border-neutral-700 shadow-xl shadow-white/10", data: { gallery_target: "thumbVideo" } ) %>
+    </div>
+    <div class="relative w-full">
+      <div class="text-center">
+        Scan the <b>QR Code</b> <br> to download your file
+      </div>
+      <div class="text-center py-5">
+        <img data-gallery-target="qrImage" id="qr-image" alt="QR Code" class="m-auto" />
+      </div>
+      <div class="text-center">
+        <button class="bg-neutral-900 text-white p-3 rounded-xl" data-action="click->gallery#toggleVisibility">
+          <- Back
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-12 text-white w-full min-h-screen">
+    <div class="col-span-12 absolute top-0 bottom-0 w-full overflow-y-auto">
+      <%= turbo_stream_from :export_list %>
+      <div id='all_exports' class=" grid grid-cols-3 gap-10 p-10">
+        <% @exports.each do |export| %>
+          <%= render partial:"exports/export", locals: { export: export} %>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,8 +1,8 @@
-<tr id=<%= dom_id(ai_theme) %> class="bg-neutral-100 border-b border-neutral-300">
+<tr id=<%= dom_id(ai_theme) %> class="bg-neutral-900/10 border-b border-neutral-300">
   <td class="p-2"><%= image_tag ai_theme.preview_url, class: "" if ai_theme.preview.present? %></td>
   <td class="p-2"><%= ai_theme.name %></td>
-  <td class="flex gap-2 p-2 bg-neutral-100 items-center justify-end text-right ml-auto h-full">
-    <%= button_to "PIN", event_ai_photobooth_ai_theme_pin_path(event, event.ai_photobooth, ai_theme), class: "bg-neutral-100 border border-green-700 rounded-lg py-2 px-2 font-bold text-green-700 text-xs" if !event.ai_photobooth.selected_themes.include?(ai_theme.id) %>
+  <td class="flex gap-2 p-2 bg-neutral-900/10 items-center justify-end text-right ml-auto h-full">
+    <%= button_to "PIN", event_ai_photobooth_ai_theme_pin_path(event, event.ai_photobooth, ai_theme), class: "bg-neutral-900/10 border border-green-700 rounded-lg py-2 px-2 font-bold text-green-700 text-xs" if !event.ai_photobooth.selected_themes.include?(ai_theme.id) %>
     <%= button_to "UNPIN", event_ai_photobooth_ai_theme_unpin_path(event, event.ai_photobooth, ai_theme), class: "bg-neutral-100 border border-red-700 rounded-lg py-2 px-2 font-bold text-red-700 text-xs" if event.ai_photobooth.selected_themes.include?(ai_theme.id) %>
     <%= link_to "EDIT", edit_event_ai_photobooth_ai_theme_path(event, event.ai_photobooth, ai_theme), class: "bg-neutral-100 border border-black rounded-lg py-2 px-2 font-bold text-black text-xs" %>
   </td>

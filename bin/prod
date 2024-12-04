@@ -22,7 +22,7 @@ RAILS_ENV=production bin/rails tailwindcss:build
 RAILS_ENV=production bin/rails assets:precompile
 
 # Preparing database
-RAILS_ENV=production rails db:setup
+# RAILS_ENV=production rails db:setup
 RAILS_ENV=production rails db:migrate
 
 exec foreman start -f Procfile.prod "$@"

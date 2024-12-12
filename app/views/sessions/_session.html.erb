@@ -76,13 +76,71 @@
 <% end %>
 
 <% if session.event.booth_type == "photobooth" %>
-<tr id=<%= dom_id(session) %> class="bg-neutral-100 border-b border-neutral-300">
-  <td class="p-2"><%= SqidsService.new([ session.id ]).call %></td>
-  <td class="p-2"><%= local_time(session.updated_at, "%H:%M | %-d %B %Y") %></td>
-  <td class="p-2"><%= session.status %></td>
-  <td class="flex gap-2 p-2 bg-neutral-100 justify-end ml-auto">
-    <%= button_to "PRINT PHOTO", event_photobooth_session_print_photo_path(session.event, session.event.photobooth, session), class: "bg-neutral-800 rounded-lg py-2 px-2 font-bold text-white text-xs" if session.status == "completed" %>
-    <%= button_to "PRINT QR", 'connect', id: 'connect', class: "bg-neutral-100 border border-black rounded-lg py-2 px-2 font-bold text-black text-xs"%>
+<tr id=<%= dom_id(session) %> class="bg-neutral-900/10 border-b border-neutral-800/80 text-neutral-300 text-sm">
+  <td class="p-2 border-x border-neutral-800/80"><%= session.id %> </td>
+  <td class="p-2 border-x border-neutral-800/80 text-center">
+    <div class="flex justify-center gap-2">
+      <%= SqidsService.new([ session.id ]).call %>
+      <%= link_to (Rails.env.production? ? "https://tholee.my.id/d/#{SqidsService.new([ session.id ]).call}" : "https://tholee.my.id/development/#{SqidsService.new([ session.id ]).call}" ), class: "border border-black bg-neutral-800 rounded-md py-1 px-2 text-white text-xs", target: "_blank", data: { turbo_submits_with: '<div class="ri-refresh-line animate-spin"></div>' } do %> <i class="ri-external-link-line"></i>
+      <% end %>
+    </div>
+  </td>
+  <td class="p-2 border-x border-neutral-800/80 text-center"><%= local_time(session.created_at, "%H:%M, %-d %B %Y") %></td>
+  <td class="p-2 relative border-x border-neutral-800/80 text-center">
+    <% if session.status == 'completed' %>
+      <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300 uppercase">completed</span>
+    <% end %>
+    <% if session.status == 'failed' %>
+      <span data-popover-target="popover-<%= session.id %>" class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300 uppercase">failed</span>
+
+      <div data-popover id="popover-<%= session.id %>" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-xs text-red-100 transition-opacity duration-300 bg-zinc-900 border border-red-400 rounded-lg shadow-sm opacity-0">
+        <div class="px-3 py-2 bg-red-800 border-b border-red-300 rounded-t-lg">
+          <h3 class="font-semibold text-left text-zinc-200">FAILED</h3>
+        </div>
+        <div class="px-3 py-2 text-left">
+          <%= session.error %>
+        </div>
+        <div data-popper-arrow></div>
+      </div>
+    <% end %>
+    <% if session.status == 'capturing' %>
+      <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 uppercase">capturing</span>
+    <% end %>
+    <% if session.status == 'queued' %>
+      <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 uppercase">queued</span>
+    <% end %>
+    <% if session.status == 'pending' %>
+      <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 uppercase">pending</span>
+    <% end %>
+    <% if session.status == 'processing' %>
+      <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300 uppercase">processing</span>
+    <% end %>
+    <% if session.status == 'downloading' %>
+      <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300 uppercase">downloading</span>
+    <% end %>
+    <% if session.status == 'uploading' %>
+      <span class="bg-pink-100 text-pink-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300 uppercase">uploading</span>
+    <% end %>
+
+    <div class="hidden w-full bg-neutral-100 rounded-full h-0.5 max-w-24 m-auto" id="progress_head_<%=session.id%>">
+      <div class="bg-blue-600 h-0.5 rounded-full" style="width: 0%" data-progress-session-id="<%= session.id %>" id="progress_<%=session.id%>"></div>
+    </div>
+
+  </td>
+  <td class="flex border-x border-neutral-800/80 gap-2 p-2 justify-end ml-auto">
+    <%#= button_to "PRINT PHOTO", event_photobooth_session_print_photo_path(session.event, session.event.photobooth, session), class: "bg-neutral-800 rounded-lg py-2 px-2 font-bold text-white text-xs" if session.status == "completed" %>
+
+    <% if session.status == "completed" %>
+      <%= render(ButtontoComponent.new(path: event_photobooth_session_print_photo_path(session.event, session.event.photobooth, session), theme: "primary", size: "sm")) do %>
+        <i class="ri-printer-line"></i> Print Photo
+      <% end %>
+    <% end %>
+
+    <%#= render(ButtontoComponent.new(path: event_photobooth_session_print_qr_path(session.event, session.event.photobooth, session), theme: "primary", size: "sm")) do %>
+<!--      <i class="ri-qr-code-line"></i> Print QR-->
+    <%# end %>
+
+    <%#= button_to "PRINT QR", 'connect', id: 'connect', class: "bg-neutral-100 border border-black rounded-lg py-2 px-2 font-bold text-black text-xs"%>
     <%#= button_to "RETRY", event_photobooth_session_retry_path(session.event, session.event.photobooth, session), class: "bg-red-600 rounded-lg py-2 px-3 font-bold text-white text-xs" if session.status != "capturing" %>
   </td>
 </tr>

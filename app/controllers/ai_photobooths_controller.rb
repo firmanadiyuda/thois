@@ -54,12 +54,15 @@ class AiPhotoboothsController < ApplicationController
         # Resize image
         image = MiniMagick::Image.open(@raw.filename.current_path)
         image.auto_orient
-        image.resize "1200x1800"
+        # image.resize "1200x1800"
+        image.resize "1800x1200"
         image.gravity "center"
-        image.crop "1080x1800+60+0"
-        image.resize "1200x2000"
-        image.crop "1200x1800+0+100"
-        # image.gravity "center"
+        # image.crop "1080x1800+60+0"
+        image.crop "1800x1080+60+0"
+        # image.resize "1200x2000"
+        image.resize "2000x1200"
+        # image.crop "1200x1800+0+100"
+        image.crop "1800x1200+0+100"
         image.quality "90"
         image.strip
 
@@ -126,7 +129,7 @@ class AiPhotoboothsController < ApplicationController
     @selected_themes = AiTheme.where(id: @event.ai_photobooth.selected_themes)
 
     id = SqidsService.new([ @session.id ]).call
-    @qrurl = "tholee.my.id/dl/#{id}"
+    @qrurl = "tholee.my.id/d/#{id}"
 
     render layout: "liveview"
   end
@@ -201,7 +204,7 @@ class AiPhotoboothsController < ApplicationController
     # 3x width and 3x height: \x1D\x21\x22
     # 4x width and 4x height: \x1D\x21\x33
 
-    qr_data = "https://tholee.my.id/dl/#{id}"
+    qr_data = "https://tholee.my.id/d/#{id}"
 
     @printer << "\n\n\n"  # Print 3 empty lines
     @printer << "\x1B\x61\x01" # ESC a 1 -> Align center

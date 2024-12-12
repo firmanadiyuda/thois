@@ -64,9 +64,11 @@ class GenerateAiService
       # Load the image using MiniMagick
       image = MiniMagick::Image.open(tempfile.path)
       # image.resize "1152x1920"
-      image.resize "1200x2000"
+      # image.resize "1200x2000"
+      image.resize "2000x1200"
       image.gravity "center"
-      image.crop "1200x1800+0+100"
+      # image.crop "1200x1800+0+100"
+      image.crop "1800x1200+0+100"
 
       # Load the overlay image
       overlay = MiniMagick::Image.open(@event.ai_photobooth.overlay.current_path)

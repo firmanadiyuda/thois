@@ -1,7 +1,8 @@
 <div class="bg-black text-white h-screen w-full relative">
   <div class="h-full w-full relative flex items-center justify-center">
     <%= tag.img id: 'preview-captured', class: 'h-full w-full object-contain hidden' %>
-    <%= tag.img id: 'liveview', class: 'object-contain rotate-90 hidden' %>
+    <%#= tag.img id: 'liveview', class: 'object-contain rotate-90 hidden' %>
+    <%= tag.img id: 'liveview', class: 'h-full w-full object-contain hidden' %>
     <div id="countdown" class="absolute bg-black/30 p-5 w-full text-center rounded-3xl text-white bold text-[125pt] hidden"></div>
 
     <!--Show current session photo count-->
@@ -30,13 +31,3 @@
   </div>
 
 </div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const liveview = document.getElementById('liveview');
-    const screenHeight = window.innerHeight; // Mendapatkan tinggi layar
-    const screenWidth = window.innerWidth; // Mendapatkan tinggi layar
-    liveview.style.maxWidth = screenHeight + 'px'; // Mengatur max-width berdasarkan tinggi layar
-    liveview.style.maxHeight = screenWidth + 'px'; // Mengatur max-width berdasarkan tinggi layar
-  });
-</script>

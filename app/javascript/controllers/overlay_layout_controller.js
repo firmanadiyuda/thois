@@ -13,7 +13,8 @@ export default class extends Controller {
     this.overlayHorizontalInputTarget.addEventListener('change', (event) => this.handleOverlayHorizontalChange(event));
 
     // Event listener for form if submit triggered
-    document.querySelector('form').addEventListener('submit', (event) => {
+
+      document.getElementById('config_form').addEventListener('submit', (event) => {
       // Update overlay layout field with current canvas data
       this.updateOverlayLayoutField();
     });

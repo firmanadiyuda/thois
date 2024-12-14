@@ -14,9 +14,10 @@ Rails.application.routes.draw do
       get "gallery"
       resources :sessions do
         post "print_photo", to: "photobooths#print_photo"
+        post "reupload", to: "photobooths#reupload"
         post "retry", to: "photobooths#retry"
       end
-    end
+  end
 
     resources :ai_photobooths do
       get "liveview"

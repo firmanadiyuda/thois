@@ -233,6 +233,11 @@ class PhotoboothsController < ApplicationController
     system("lp -d #{printer.name} -o PageSize=#{paper.capitalize} -o scaling=20 #{@export.filename.current_path}")
   end
 
+  def reupload
+    @session = Session.find(params[:session_id])
+    UploadJob.perform_later(@session)
+  end
+
   private
 
   def set_session

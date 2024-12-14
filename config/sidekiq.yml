@@ -2,5 +2,6 @@
 :queues:
   - default
   - photobooth_queue
+  - upload_queue
   - ai_photobooth_queue
   - videobooth_queue

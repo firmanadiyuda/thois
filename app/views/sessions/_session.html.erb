@@ -130,6 +130,10 @@
   <td class="flex border-x border-neutral-800/80 gap-2 p-2 justify-end ml-auto">
     <%#= button_to "PRINT PHOTO", event_photobooth_session_print_photo_path(session.event, session.event.photobooth, session), class: "bg-neutral-800 rounded-lg py-2 px-2 font-bold text-white text-xs" if session.status == "completed" %>
 
+    <%= render(ButtontoComponent.new(path: event_photobooth_session_reupload_path(session.event, session.event.photobooth, session), theme: "primary", size: "sm")) do %>
+      <i class="ri-printer-line"></i> Reupload
+    <% end %>
+    
     <% if session.status == "completed" %>
       <%= render(ButtontoComponent.new(path: event_photobooth_session_print_photo_path(session.event, session.event.photobooth, session), theme: "primary", size: "sm")) do %>
         <i class="ri-printer-line"></i> Print Photo

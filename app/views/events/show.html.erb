@@ -41,6 +41,10 @@
         <%= render(ButtontoComponent.new(path: event_videobooth_increment_counter_path(@event, @event.videobooth), theme: "secondary")) do %> <i class="ri-add-line"></i><% end %>
         <%= render(LinktoComponent.new(path: event_videobooth_gallery_path(@event, @event.videobooth))) do %> <i class="ri-gallery-view"></i> Gallery <% end %>
       <% end %>
+
+      <% if @event.booth_type == "wedding" %>
+        <%= render(LinktoComponent.new(path: event_wedding_operator_path(@event, @event.wedding))) do %> Operator <% end %>
+      <% end %>
       
       <%= render(LinktoComponent.new(path: edit_event_path(@event))) do %> <i class="ri-settings-4-line"></i> Edit <% end %>
     </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_26_175851) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_20_160738) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -111,6 +111,17 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_26_175851) do
     t.index ["event_id"], name: "index_videobooths_on_event_id"
   end
 
+  create_table "weddings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "thermal", default: true
+    t.string "overlay"
+    t.boolean "use_overlay", default: false
+    t.string "cam_dir", default: "DCIM/100CANON"
+    t.bigint "event_id"
+    t.index ["event_id"], name: "index_weddings_on_event_id"
+  end
+
   add_foreign_key "ai_photobooths", "events"
   add_foreign_key "exports", "sessions"
   add_foreign_key "photobooths", "events"
@@ -118,4 +129,5 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_26_175851) do
   add_foreign_key "sessions", "ai_themes"
   add_foreign_key "sessions", "events"
   add_foreign_key "videobooths", "events"
+  add_foreign_key "weddings", "events"
 end

@@ -12,7 +12,7 @@
     </div>
   <% end %>
 
-  <div class="grid grid-cols-1 w-full text-sm" data-controller="videobooth-form">
+  <div class="grid grid-cols-1 w-full text-sm" >
     <div class="grid grid-cols-2 border border-neutral-700/70 w-full rounded-t-xl">
       <div class="w-full bg-neutral-900 p-5 rounded-tl-xl">
         <b>Name</b> <br>
@@ -45,7 +45,8 @@
           options: [
             ["photobooth", "Photobooth"],
             ["videobooth", "360 Videobooth"],
-            ["ai_photobooth", "AI Photobooth"]],
+            ["ai_photobooth", "AI Photobooth"],
+            ["wedding", "Wedding Express"]],
           data: { action: "change->booth-type#toggleVisibility" } # memicu controller pada perubahan
         )) %>
       </div>
@@ -56,6 +57,7 @@
     <div data-booth-type-target="photoboothForm"> <%= render "/photobooths/form", form: form %> </div>
     <div data-booth-type-target="videoboothForm"> <%= render "/videobooths/form", form: form %> </div>
     <div data-booth-type-target="aiPhotoboothForm"> <%= render "/ai_photobooths/form", form: form %> </div>
+    <div data-booth-type-target="weddingForm"> <%= render "/weddings/form", form: form %> </div>
   </div>
 
   <div class="mt-5">

@@ -1,0 +1,50 @@
+<div class="grid gap-5">
+  <%= form.fields_for :wedding do |config_form| %>
+
+    <div class="grid grid-cols-1 w-full text-sm" data-controller="videobooth-form">
+      <div class="grid grid-cols-2 border border-neutral-700/70 w-full">
+        <div class="w-full bg-neutral-900 p-5">
+          <b>Print Thermal</b> <br>
+          <span class="text-neutral-400">Print QR Code with printer thermal.</span>
+        </div>
+        <div class="w-full bg-neutral-800 shadow-xl shadow-black p-5">
+          <%= render(RadioButtonComponent.new(
+            form: config_form,
+            name: "thermal",
+            options: [[true, "Yes"], [false, "No"]],
+          )) %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 border border-neutral-700/70 w-full rounded-t-xl">
+        <div class="w-full bg-neutral-900 p-5 rounded-tl-xl">
+          <b>Camera Directory</b> <br>
+          <span class="text-neutral-400">Set the camera directory that store captured photo.</span>
+        </div>
+        <div class="w-full bg-neutral-800 shadow-xl shadow-black p-5 rounded-tr-xl">
+          <%= render(InputComponent.new(form: config_form, type: "text_field", label: "Camera Directory", data: "cam_dir")) %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 border border-neutral-700/70 w-full">
+        <div class="w-full bg-neutral-900 p-5">
+          <b>Overlay</b> <br>
+          <span class="text-neutral-400">Set overlay image. PNG format only.</span>
+        </div>
+        <div class="w-full bg-neutral-800 shadow-xl shadow-black p-5">
+          <%= config_form.file_field :overlay, data: { videobooth_form_target: 'overlayInput' } %>
+          <br><br>
+          <%= image_tag(config_form.object.overlay_url + "?v=#{config_form.object.updated_at.to_i}", class: "max-w-56", data: { videobooth_form_target: 'overlayImg' } ) if config_form.object.overlay.present? %>
+          <%= image_tag("", class: "max-w-56", data: { videobooth_form_target: 'overlayImg' }) if !config_form.object.overlay.present? %>
+          <%= render(RadioButtonComponent.new(
+            form: config_form,
+            name: "use_overlay",
+            label: "Use Overlay?",
+            options: [[true, "Yes"], [false, "No"]],
+          )) %>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+</div>

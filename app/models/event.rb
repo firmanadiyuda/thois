@@ -6,13 +6,15 @@ class Event < ApplicationRecord
   has_one :photobooth, dependent: :destroy
   has_one :ai_photobooth, dependent: :destroy
   has_one :videobooth, dependent: :destroy
+  has_one :wedding, dependent: :destroy
   has_many :session, dependent: :destroy
 
-  enum :booth_type, [ :photobooth, :videobooth, :ai_photobooth ]
+  enum :booth_type, [ :photobooth, :videobooth, :ai_photobooth, :wedding ]
 
   accepts_nested_attributes_for :photobooth, allow_destroy: true
   accepts_nested_attributes_for :videobooth, allow_destroy: true
   accepts_nested_attributes_for :ai_photobooth, allow_destroy: true
+  accepts_nested_attributes_for :wedding, allow_destroy: true
   # accepts_nested_attributes_for :session, allow_destroy: true
 
   before_save :handle_configuration

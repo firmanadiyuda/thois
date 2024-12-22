@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
   resources :events do
+    resources :weddings do
+      get "operator"
+      post "process_photo/:total", to: "weddings#process_photo"
+      resources :sessions do
+        post "reupload", to: "weddings#reupload"
+        post "print_qr", to: "weddings#print_qr"
+        post "delete_session", to: "videobooths#delete_session"
+      end
+    end
+
     resources :photobooths do
       get "liveview"
       get "liveview_operator"
@@ -17,7 +27,7 @@ Rails.application.routes.draw do
         post "reupload", to: "photobooths#reupload"
         post "retry", to: "photobooths#retry"
       end
-  end
+    end
 
     resources :ai_photobooths do
       get "liveview"
@@ -57,11 +67,7 @@ Rails.application.routes.draw do
     end
 
     resources :sessions do
-      # resources :export
     end
-
-
-    # resources :videobooth_sessions
   end
 
   get "camera/live"

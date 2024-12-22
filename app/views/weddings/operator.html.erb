@@ -1,0 +1,11 @@
+<div class="flex items-center justify-center">
+  <div class="grid grid-cols-3 text-center gap-10 max-w-xs">
+    <% 9.times do |i| %>
+      <%= render(ButtontoComponent.new(path: "/events/#{@event.id}/weddings/#{@event.wedding.id}/process_photo/#{i+1}", theme: "primary")) do %>
+        <p class="text-2xl">
+          <%= i+1 %>
+        </p>
+      <% end %>
+    <% end %>
+  </div>
+</div>

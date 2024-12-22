@@ -18,6 +18,7 @@ class EventsController < ApplicationController
     @event.build_photobooth
     @event.build_ai_photobooth
     @event.build_videobooth
+    @event.build_wedding
   end
 
   # GET /events/1/edit
@@ -25,6 +26,7 @@ class EventsController < ApplicationController
     @event.build_photobooth unless @event.photobooth
     @event.build_ai_photobooth unless @event.ai_photobooth
     @event.build_videobooth unless @event.videobooth
+    @event.build_wedding unless @event.wedding
   end
 
   # POST /events or /events.json
@@ -76,6 +78,7 @@ class EventsController < ApplicationController
         :name, :description, :booth_type,
         photobooth_attributes: [ :id, :print, :paper, :thermal, :overlay, :overlay_layout, :overlay_horizontal, :use_overlay_horizontal, :remove_overlay ],
         ai_photobooth_attributes: [ :id, :ai_api, :print, :paper, :thermal, :overlay, :remove_overlay ],
-        videobooth_attributes: [ :id, :counter, :overlay, :overlay_video, :use_overlay_video, :music, :use_music, :quality, :slowmo_one, :slowmo_two, :remove_overlay ])
+        videobooth_attributes: [ :id, :counter, :overlay, :overlay_video, :use_overlay_video, :music, :use_music, :quality, :slowmo_one, :slowmo_two, :remove_overlay ],
+        wedding_attributes: [ :id, :thermal, :cam_dir, :overlay, :use_overlay, :remove_overlay ])
     end
 end

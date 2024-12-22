@@ -36,15 +36,28 @@ class CreategifService
 
     # Create temporary directory for exported gif
     gif_temp = Rails.root.join("tmp", "gif/#{uuid}/#{uuid}.mp4")
-    overlay_horizontal = @event.photobooth.overlay_horizontal.current_path
 
-    # Preparing gif creation
-    if @event.photobooth.use_overlay_horizontal?
-      @filter_complex = "[0:v]loop=#{repeat_count}:size=#{@raws.count},setpts=N/#{@raws.count}/TB,scale=1080:720[e];[1]scale=1080:720[ov];[e][ov]overlay=0:0"
-      @custom_parameter = [ "-i", overlay_horizontal, "-filter_complex", @filter_complex, "-pix_fmt", "yuv420p" ]
+    if @event.booth_type == "photobooth"
+      overlay_horizontal = @event.photobooth.overlay_horizontal.current_path
+
+      # Preparing gif creation
+      if @event.photobooth.use_overlay_horizontal?
+        @filter_complex = "[0:v]loop=#{repeat_count}:size=#{@raws.count},setpts=N/#{@raws.count}/TB,scale=1080:720[e];[1]scale=1080:720[ov];[e][ov]overlay=0:0"
+        @custom_parameter = [ "-i", overlay_horizontal, "-filter_complex", @filter_complex, "-pix_fmt", "yuv420p" ]
+      else
+        @filter_complex = "[0:v]loop=#{repeat_count}:size=#{@raws.count},setpts=N/#{@raws.count}/TB,scale=1080:720"
+        @custom_parameter = [ "-filter_complex", @filter_complex, "-pix_fmt", "yuv420p" ]
+      end
     else
-      @filter_complex = "[0:v]loop=#{repeat_count}:size=#{@raws.count},setpts=N/#{@raws.count}/TB,scale=1080:720"
-      @custom_parameter = [ "-filter_complex", @filter_complex, "-pix_fmt", "yuv420p" ]
+
+      overlay = @event.wedding.overlay.current_path
+      if @event.wedding.use_overlay?
+        @filter_complex = "[0:v]loop=#{repeat_count}:size=#{@raws.count},setpts=N/#{@raws.count}/TB,scale=1080:720[e];[1]scale=1080:720[ov];[e][ov]overlay=0:0"
+        @custom_parameter = [ "-i", overlay, "-filter_complex", @filter_complex, "-pix_fmt", "yuv420p" ]
+      else
+        @filter_complex = "[0:v]loop=#{repeat_count}:size=#{@raws.count},setpts=N/#{@raws.count}/TB,scale=1080:720"
+        @custom_parameter = [ "-filter_complex", @filter_complex, "-pix_fmt", "yuv420p" ]
+      end
     end
 
     gif_transcoder = FFMPEG::Transcoder.new(

@@ -14,9 +14,7 @@ class Export < ApplicationRecord
 
   def broadcast_type
     if self.session.event.booth_type == "photobooth"
-      if self.filetype == "video"
-        broadcast_prepend_later_to :export_list, target: "all_exports", partial: "exports/export", locals: { export: self }
-      end
+      broadcast_prepend_later_to :export_list, target: "all_exports", partial: "exports/export", locals: { export: self }
     end
     if self.session.event.booth_type == "videobooth"
       broadcast_prepend_later_to :export_list, target: "all_exports", partial: "exports/export", locals: { export: self }

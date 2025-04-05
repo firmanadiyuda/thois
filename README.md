@@ -21,6 +21,8 @@ sudo service cups start
 sudo usermod -aG lpadmin $USER
 
 
+
+brew install gphoto2 imagemagick
 python 3.10 and bleak library for videobooth
 
 * Configuration

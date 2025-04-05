@@ -14,8 +14,13 @@
           </div>
           <div class="absolute flex gap-10 font-bold text-2xl bottom-0 text-black">
             <%= link_to event_photobooth_liveview_path, id: "previous-button" do %>
-              <div class=" bg-white px-10 py-3 rounded-t-xl">
+              <div class=" bg-white border-t-2 border-x-2 border-black/50 px-10 py-3 rounded-t-xl">
                 <- Previous
+              </div>
+            <% end %>
+            <%= link_to "#", id: "previous-button", onclick: "location.reload();" do %>
+              <div class="bg-red-600 border-t-2 border-x-2 border-black/50 text-white px-10 py-3 rounded-t-xl">
+                ⟳ Reset
               </div>
             <% end %>
             <button data-action="click->select-photo#finish">

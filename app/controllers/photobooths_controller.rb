@@ -106,13 +106,19 @@ class PhotoboothsController < ApplicationController
   def gallery
     @event = Event.find(params[:event_id])
     # @sessions = @event.session.includes(:export).where(export: { filetype: "video" })
-    @exports = Export.includes(:session).where(filetype: "video", sessions: { event_id: @event.id }).order(created_at: :desc)
+    @exports = Export.includes(:session).where(filetype: "image", printable: true, sessions: { event_id: @event.id }).order(created_at: :desc)
 
     # @sessions = @event.session.order(created_at: :desc)
-    render layout: "liveview"
+    render layout: "gallery"
   end
 
   def select_photo
+    begin
+      CameraService.instance.stop_liveview
+    rescue => e
+      Rails.logger.debug e.message
+    end
+
     @event = Event.find(params[:event_id])
     @session = @event.session.find_or_create_by(status: "capturing")
 
@@ -147,52 +153,17 @@ class PhotoboothsController < ApplicationController
 
   def finish
     @event = Event.find(params[:event_id])
-    @session = @event.session.find_or_create_by(status: "capturing")
 
-    uploaded_image = params[:export].path
+    # Simpan file ke dalam tmp folder sebelum dikirim ke job
+    uploaded_file = params[:export]
+    temp_path = Rails.root.join("tmp", uploaded_file.original_filename)
+    File.open(temp_path, "wb") { |f| f.write(uploaded_file.read) }
 
-    # Resize the image using MiniMagick
-    image = MiniMagick::Image.open(uploaded_image)
-    image.resize "1200x1800"
+    print = @event.photobooth.print?
 
-    resized_image_path = Rails.root.join("tmp", "#{params[:export].original_filename}")
-    image.write(resized_image_path)
+    # Panggil job dengan path file yang sudah disimpan
+    PhotoboothJob.perform_later(@event.id, temp_path.to_s, uploaded_file.original_filename, print)
 
-    # @export = @session.export.create(filename: params[:export], filetype: "image")
-    # Create new export, containing printable image
-    @export = @session.export.find_or_create_by(printable: true) do |export|
-      export.filename = params[:export]
-      # export.filename = File.open(resized_image_path)
-      export.filetype = "image"
-    end
-
-    @session.status = "processing"
-    @session.save
-
-    @new_session = @event.session.find_or_create_by(status: "capturing")
-
-    # Dispatch Photobooth Job
-    PhotoboothJob.perform_later(@session)
-
-    # Print image if print configuration set to true
-    if @event.photobooth.print?
-      # Search printer by name
-      printer = Cups::Printer.get_destination("HiTi_P510S_2")
-
-      # Set paper size from configuration
-      paper = @event.photobooth.paper
-
-      # Print to printer
-      system("lp -d #{printer.name} -o PageSize=#{paper.capitalize} -o scaling=20 #{@export.filename.current_path}")
-      #
-      # pdf_path = Rails.root.join("tmp", "print.pdf")
-      # Prawn::Document.generate(pdf_path, page_size: [ 4 * 72, 6 * 72 ], margin: 0) do |pdf|
-      #   pdf.image @export.filename.current_path, fit: [ 4 * 72, 6 * 72 ]
-      # end
-      # system("lp -d #{printer.name} -o PageSize=#{paper.capitalize} -o scaling=20 #{pdf_path}")
-    end
-
-    File.delete(resized_image_path) if File.exist?(resized_image_path)
 
     respond_to do |format|
       format.html { redirect_to event_photobooth_liveview_url(@event) }
@@ -236,6 +207,12 @@ class PhotoboothsController < ApplicationController
   def reupload
     @session = Session.find(params[:session_id])
     UploadJob.perform_later(@session)
+  end
+
+  def delete_session
+    session_id = params[:session_id]
+    @session = Session.find(params[:session_id])
+    @session.destroy!
   end
 
   private

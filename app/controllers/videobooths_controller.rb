@@ -124,30 +124,15 @@ class VideoboothsController < ApplicationController
     end
   end
 
-  def retry
-    @session = Session.find(params[:session_id])
-    @session.status = "processing"
-    @session.save
-
-    @export = @session.export.find_or_create_by(printable: true)
-    @export.destroy
-
-    AiPhotoboothJob.perform_later(@session)
-
-    # Search printer by name
-    # printer = Cups::Printer.get_destination("HiTi_P510S_2")
-
-    # Set paper size from configuration
-    # paper = @event.photobooth.paper
-
-    # Print to printer
-    # system("lp -d #{printer.name} -o PageSize=#{paper.capitalize} -o scaling=20 #{@export.filename.current_path}")
-  end
-
   def delete_session
     session_id = params[:session_id]
     @session = Session.find(params[:session_id])
     @session.destroy!
+  end
+
+  def reupload
+    @session = Session.find(params[:session_id])
+    UploadJob.perform_later(@session)
   end
 
   def gallery

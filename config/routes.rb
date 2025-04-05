@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       resources :sessions do
         post "reupload", to: "weddings#reupload"
         post "print_qr", to: "weddings#print_qr"
-        post "delete_session", to: "videobooths#delete_session"
+        post "delete_session", to: "weddings#delete_session"
       end
     end
 
@@ -26,6 +26,8 @@ Rails.application.routes.draw do
         post "print_photo", to: "photobooths#print_photo"
         post "reupload", to: "photobooths#reupload"
         post "retry", to: "photobooths#retry"
+        post "delete_session", to: "photobooths#delete_session"
+        get "show_gallery", to: "photobooths#show_gallery"
       end
     end
 
@@ -58,6 +60,7 @@ Rails.application.routes.draw do
       post "decrement_counter"
       get "gallery"
       resources :sessions do
+        post "reupload", to: "videobooths#reupload"
         post "process_video", to: "videobooths#process_video"
         post "increment_session_counter", to: "videobooths#increment_session_counter"
         post "decrement_session_counter", to: "videobooths#decrement_session_counter"

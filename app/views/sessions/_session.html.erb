@@ -140,6 +140,10 @@
       <% end %>
     <% end %>
 
+    <%= render(ButtontoComponent.new(path: event_photobooth_session_delete_session_path(session.event, session.event.photobooth, session), theme: "danger", size: "sm", confirm: "Are you sure?")) do %>
+      <i class="ri-delete-bin-line"></i>
+    <% end %>
+
     <%#= render(ButtontoComponent.new(path: event_photobooth_session_print_qr_path(session.event, session.event.photobooth, session), theme: "primary", size: "sm")) do %>
 <!--      <i class="ri-qr-code-line"></i> Print QR-->
     <%# end %>
@@ -215,6 +219,10 @@
   <td class="flex border-x border-neutral-800/80 gap-2 p-2 justify-end ml-auto">
     <%= render(ButtontoComponent.new(path: event_videobooth_session_process_video_path(session.event, session.event.videobooth, session), theme: "primary", size: "sm")) do %>
       <i class="ri-play-fill"></i> Process
+    <% end %>
+
+    <%= render(ButtontoComponent.new(path: event_videobooth_session_reupload_path(session.event, session.event.videobooth, session), theme: "primary", size: "sm")) do %>
+      <i class="ri-printer-line"></i> Reupload
     <% end %>
 
     <%= render(ButtontoComponent.new(path: event_videobooth_session_print_qr_path(session.event, session.event.videobooth, session), theme: "primary", size: "sm")) do %>
